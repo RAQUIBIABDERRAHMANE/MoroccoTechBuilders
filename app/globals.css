@@ -1,0 +1,252 @@
+/* ─── Design Tokens: GitHub Dev Days Style ──────────────────── */
+:root {
+  /* Hero: Dark navy/black */
+  --hero-bg:      #0d1117;
+  --hero-surface: #161b22;
+
+  /* Content sections: Clean white */
+  --white:        #ffffff;
+  --gray-50:      #f6f8fa;
+  --gray-100:     #eaeef2;
+  --gray-200:     #d0d7de;
+  --gray-300:     #afb8c1;
+  --gray-600:     #57606a;
+  --gray-800:     #24292f;
+  --gray-900:     #1c2128;
+
+  /* Accent: Electric Green (GitHub Copilot brand) */
+  --green:        #3fb950;
+  --green-hover:  #2ea043;
+  --green-dark:   #09b43a;
+  --green-dim:    rgba(63, 185, 80, 0.15);
+  --green-border: rgba(63, 185, 80, 0.3);
+
+  /* Teal strip accent */
+  --teal:         #1f6feb;
+  --teal-strip:   #0e4429;
+
+  /* Text on dark */
+  --text-dark-h:  #e6edf3;
+  --text-dark-b:  #8b949e;
+  --text-dark-f:  #484f58;
+
+  /* Text on light */
+  --text-light-h: #1c2128;
+  --text-light-b: #57606a;
+
+  /* Radii: all-soft 6px system (GitHub style) */
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+
+  /* Typography */
+  --font-sans: var(--font-inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif);
+  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+
+  /* Layout */
+  --container: 1280px;
+  --container-narrow: 960px;
+}
+
+/* ─── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--white);
+  color: var(--text-light-h);
+  line-height: 1.5;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea { font-family: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── Layout ─────────────────────────────────────────────────── */
+.container {
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+.container-narrow {
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ─── Section System ─────────────────────────────────────────── */
+.section-white {
+  background: var(--white);
+  padding: 80px 0;
+}
+.section-gray {
+  background: var(--gray-50);
+  padding: 80px 0;
+  border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100);
+}
+.section-dark {
+  background: var(--hero-bg);
+  padding: 80px 0;
+}
+
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  margin-bottom: 12px;
+  display: block;
+}
+
+.section-label-dark {
+  color: var(--green);
+}
+
+.section-h2 {
+  font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-light-h);
+  margin-bottom: 12px;
+  line-height: 1.2;
+}
+
+.section-h2-center {
+  text-align: center;
+}
+
+.section-sub {
+  font-size: 1rem;
+  color: var(--text-light-b);
+  max-width: 540px;
+  line-height: 1.6;
+}
+.section-sub-center {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ─── Buttons ────────────────────────────────────────────────── */
+.btn-green {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  background: var(--green);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-green:hover { background: var(--green-hover); }
+.btn-green:active { transform: scale(0.98); }
+
+.btn-outline-white {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-outline-white:hover {
+  border-color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.07);
+}
+
+.btn-outline-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  border: 1px solid var(--gray-200);
+  color: var(--text-light-h);
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-outline-dark:hover {
+  border-color: var(--gray-300);
+  background: var(--gray-50);
+}
+
+/* ─── Card ───────────────────────────────────────────────────── */
+.card {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+.card:hover {
+  border-color: rgba(63, 185, 80, 0.45);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.07), 0 0 0 1px rgba(63, 185, 80, 0.15);
+  transform: translateY(-2px);
+}
+
+/* ─── Badge ──────────────────────────────────────────────────── */
+.badge-green {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* ─── Divider ────────────────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--gray-100);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 7px; }
+::-webkit-scrollbar-track { background: var(--gray-50); }
+::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gray-300); }
+
+/* ─── Accessibility ──────────────────────────────────────────── */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .container, .container-narrow { padding: 0 20px; }
+  .section-white, .section-gray, .section-dark { padding: 60px 0; }
+}

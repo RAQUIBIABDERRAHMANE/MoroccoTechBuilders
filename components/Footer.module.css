@@ -1,0 +1,108 @@
+.footer {
+  background: var(--hero-bg);
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.topBar { padding: 52px 0 48px; }
+
+.topInner {
+  display: grid;
+  grid-template-columns: 1.8fr 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Brand */
+.brand {}
+.brandLogo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.brandLogoImg {
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  box-shadow: 0 0 10px rgba(63, 185, 80, 0.25);
+}
+.brandName {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #fff;
+}
+.brandSub { font-weight: 400; opacity: 0.6; }
+.brandDesc {
+  font-size: 0.83rem;
+  color: var(--text-dark-b);
+  line-height: 1.65;
+  max-width: 300px;
+}
+
+/* Links */
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.linksTitle {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dark-b);
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+}
+.links a {
+  font-size: 0.86rem;
+  color: rgba(255,255,255,0.55);
+  transition: color 0.15s;
+  cursor: pointer;
+}
+.links a:hover { color: #fff; }
+
+/* Info */
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+}
+.infoItem svg { flex-shrink: 0; color: var(--green); margin-top: 1px; }
+
+/* Bottom bar */
+.bottomBar {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 16px 0;
+}
+.bottomInner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+.copy {
+  font-size: 0.78rem;
+  color: var(--text-dark-b);
+}
+.copy strong { color: rgba(255,255,255,0.7); font-weight: 600; }
+.built {
+  font-size: 0.78rem;
+  color: var(--text-dark-f);
+}
+
+@media (max-width: 860px) {
+  .topInner { grid-template-columns: 1fr 1fr; }
+  .brand { grid-column: 1 / -1; }
+}
+@media (max-width: 540px) {
+  .topInner { grid-template-columns: 1fr; gap: 28px; }
+  .bottomInner { flex-direction: column; align-items: flex-start; }
+}

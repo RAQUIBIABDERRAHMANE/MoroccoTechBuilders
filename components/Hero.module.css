@@ -1,0 +1,189 @@
+.hero {
+  background: var(--hero-bg);
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 64px; /* navbar height */
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle dot grid background */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(63,185,80,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+}
+
+/* ── Eyebrow bar ─────────────────────────────────── */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 32px;
+  background: var(--teal-strip);
+  color: var(--green);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(63,185,80,0.2);
+}
+.eyebrowDot {
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+/* ── Grid ────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  flex: 1;
+  align-items: center;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  gap: 48px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Text column ─────────────────────────────────── */
+.textCol {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.edition {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--green);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+
+.title {
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--text-dark-h);
+  margin-bottom: 24px;
+}
+.titleGreen {
+  color: var(--green);
+}
+
+/* Meta row */
+.meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-dark-b);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.metaItem svg { color: var(--green); flex-shrink: 0; }
+.metaDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-dark-f);
+}
+
+/* CTAs */
+.ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 36px;
+}
+
+/* Countdown wrapper */
+.countdownWrap {
+  width: 100%;
+  max-width: 480px;
+}
+
+/* ── Visual column ───────────────────────────────── */
+.visualCol {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 500px;
+}
+
+.visualFrame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.heroImg {
+  object-fit: cover;
+  object-position: center;
+}
+
+.visualOverlayLeft {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 30%;
+  background: linear-gradient(to right, var(--hero-bg), transparent);
+  pointer-events: none;
+}
+
+.visualOverlayBottom {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30%;
+  background: linear-gradient(to top, var(--hero-bg), transparent);
+  pointer-events: none;
+}
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+    padding-top: 40px;
+  }
+  .visualCol {
+    height: 300px;
+    order: -1;
+  }
+  .visualOverlayLeft { display: none; }
+  .title { font-size: 2rem; }
+}
+@media (max-width: 480px) {
+  .eyebrow { padding: 8px 20px; font-size: 0.72rem; }
+  .title { font-size: 1.75rem; }
+}
