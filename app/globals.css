@@ -1,51 +1,76 @@
-/* ─── Design Tokens: GitHub Dev Days Style ──────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Design Tokens: Morocco Tech Builders (MTB) Brand Guidelines ─── */
 :root {
-  /* Hero: Dark navy/black */
-  --hero-bg:      #0d1117;
-  --hero-surface: #161b22;
+  /* Primary Palette */
+  --mtb-navy:         #082D5B; /* Primary / Text / UI */
+  --mtb-navy-dark:    #051d3b;
+  --mtb-red:          #E11D2E; /* Accents / Buttons */
+  --mtb-red-hover:    #c91424;
+  --mtb-green:        #10B981; /* Success / Highlights */
+  --mtb-green-hover:  #059669;
+  --mtb-light-gray:   #F1F5F9; /* Backgrounds */
 
-  /* Content sections: Clean white */
-  --white:        #ffffff;
-  --gray-50:      #f6f8fa;
-  --gray-100:     #eaeef2;
-  --gray-200:     #d0d7de;
-  --gray-300:     #afb8c1;
-  --gray-600:     #57606a;
-  --gray-800:     #24292f;
-  --gray-900:     #1c2128;
+  /* Secondary Palette */
+  --mtb-blue:         #2563EB; /* Links / Hover */
+  --mtb-dark-gray:    #1F2937; /* Body Text */
+  --mtb-gray:         #64748B; /* Muted Text */
+  --mtb-border:       #E5E7EB; /* Borders */
+  --mtb-white:        #FFFFFF; /* Surfaces */
 
-  /* Accent: Electric Green (GitHub Copilot brand) */
-  --green:        #3fb950;
-  --green-hover:  #2ea043;
-  --green-dark:   #09b43a;
-  --green-dim:    rgba(63, 185, 80, 0.15);
-  --green-border: rgba(63, 185, 80, 0.3);
+  /* Hero & Dark Surfaces (MTB Deep Navy) */
+  --hero-bg:          #082D5B;
+  --hero-surface:     #0b366d;
+  --hero-card:        rgba(255, 255, 255, 0.06);
+  --hero-border:      rgba(255, 255, 255, 0.12);
+  --teal-strip:       #051d3b;
 
-  /* Teal strip accent */
-  --teal:         #1f6feb;
-  --teal-strip:   #0e4429;
+  /* Content sections: Clean White & MTB Light Gray */
+  --white:            #FFFFFF;
+  --gray-50:          #F1F5F9;
+  --gray-100:         #E5E7EB;
+  --gray-200:         #CBD5E1;
+  --gray-300:         #94A3B8;
+  --gray-600:         #64748B;
+  --gray-800:         #1F2937;
+  --gray-900:         #082D5B;
+
+  /* Accent Mappings */
+  --green:            #10B981;
+  --green-hover:      #059669;
+  --green-dark:       #047857;
+  --green-dim:        rgba(16, 185, 129, 0.12);
+  --green-border:     rgba(16, 185, 129, 0.3);
+
+  --red:              #E11D2E;
+  --red-hover:        #c91424;
+  --red-dim:          rgba(225, 29, 46, 0.12);
+  --red-border:       rgba(225, 29, 46, 0.3);
 
   /* Text on dark */
-  --text-dark-h:  #e6edf3;
-  --text-dark-b:  #8b949e;
-  --text-dark-f:  #484f58;
+  --text-dark-h:      #FFFFFF;
+  --text-dark-b:      rgba(255, 255, 255, 0.82);
+  --text-dark-f:      rgba(255, 255, 255, 0.5);
 
   /* Text on light */
-  --text-light-h: #1c2128;
-  --text-light-b: #57606a;
+  --text-light-h:     #082D5B;
+  --text-light-b:     #1F2937;
+  --text-muted:       #64748B;
 
-  /* Radii: all-soft 6px system (GitHub style) */
-  --radius-sm:  6px;
-  --radius-md:  8px;
-  --radius-lg:  12px;
-  --radius-xl:  16px;
+  /* Radii */
+  --radius-sm:        6px;
+  --radius-md:        8px;
+  --radius-lg:        12px;
+  --radius-xl:        16px;
+  --radius-pill:      9999px;
 
-  /* Typography */
-  --font-sans: var(--font-inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif);
-  --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+  /* Typography: Headings Plus Jakarta Sans, Body Inter */
+  --font-heading:     'Plus Jakarta Sans', var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans:        'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono:        'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
   /* Layout */
-  --container: 1280px;
+  --container:        1280px;
   --container-narrow: 960px;
 }
 
@@ -55,10 +80,14 @@ html { scroll-behavior: smooth; }
 body {
   font-family: var(--font-sans);
   background: var(--white);
-  color: var(--text-light-h);
+  color: var(--text-light-b);
   line-height: 1.5;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  color: var(--text-light-h);
 }
 a { color: inherit; text-decoration: none; }
 button, input, select, textarea { font-family: inherit; }
@@ -82,10 +111,10 @@ img { display: block; max-width: 100%; }
   padding: 80px 0;
 }
 .section-gray {
-  background: var(--gray-50);
+  background: var(--mtb-light-gray);
   padding: 80px 0;
-  border-top: 1px solid var(--gray-100);
-  border-bottom: 1px solid var(--gray-100);
+  border-top: 1px solid var(--mtb-border);
+  border-bottom: 1px solid var(--mtb-border);
 }
 .section-dark {
   background: var(--hero-bg);
@@ -93,24 +122,26 @@ img { display: block; max-width: 100%; }
 }
 
 .section-label {
+  font-family: var(--font-heading);
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--green-dark);
+  color: var(--mtb-red);
   margin-bottom: 12px;
   display: block;
 }
 
 .section-label-dark {
-  color: var(--green);
+  color: var(--mtb-green);
 }
 
 .section-h2 {
+  font-family: var(--font-heading);
   font-size: clamp(1.75rem, 3.5vw, 2.5rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  color: var(--text-light-h);
+  color: var(--mtb-navy);
   margin-bottom: 12px;
   line-height: 1.2;
 }
@@ -121,7 +152,7 @@ img { display: block; max-width: 100%; }
 
 .section-sub {
   font-size: 1rem;
-  color: var(--text-light-b);
+  color: var(--mtb-gray);
   max-width: 540px;
   line-height: 1.6;
 }
@@ -132,15 +163,69 @@ img { display: block; max-width: 100%; }
 }
 
 /* ─── Buttons ────────────────────────────────────────────────── */
+.btn-red,
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--mtb-red);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(225, 29, 46, 0.25);
+}
+.btn-red:hover,
+.btn-primary:hover {
+  background: var(--mtb-red-hover);
+  box-shadow: 0 4px 14px rgba(225, 29, 46, 0.35);
+}
+.btn-red:active,
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-navy {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: var(--radius-sm);
+  background: var(--mtb-navy);
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  white-space: nowrap;
+  text-decoration: none;
+}
+.btn-navy:hover {
+  background: var(--mtb-red);
+}
+.btn-navy:active {
+  transform: scale(0.98);
+}
+
 .btn-green {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
   border-radius: var(--radius-sm);
-  background: var(--green);
+  background: var(--mtb-green);
   color: #fff;
-  font-weight: 600;
+  font-family: var(--font-heading);
+  font-weight: 700;
   font-size: 0.95rem;
   border: none;
   cursor: pointer;
@@ -148,7 +233,7 @@ img { display: block; max-width: 100%; }
   white-space: nowrap;
   text-decoration: none;
 }
-.btn-green:hover { background: var(--green-hover); }
+.btn-green:hover { background: var(--mtb-green-hover); }
 .btn-green:active { transform: scale(0.98); }
 
 .btn-outline-white {
@@ -168,8 +253,8 @@ img { display: block; max-width: 100%; }
   text-decoration: none;
 }
 .btn-outline-white:hover {
-  border-color: rgba(255,255,255,0.5);
-  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255,255,255,0.1);
 }
 
 .btn-outline-dark {
@@ -179,8 +264,8 @@ img { display: block; max-width: 100%; }
   padding: 10px 20px;
   border-radius: var(--radius-sm);
   background: transparent;
-  border: 1px solid var(--gray-200);
-  color: var(--text-light-h);
+  border: 1px solid var(--mtb-border);
+  color: var(--mtb-navy);
   font-weight: 600;
   font-size: 0.95rem;
   cursor: pointer;
@@ -189,36 +274,74 @@ img { display: block; max-width: 100%; }
   text-decoration: none;
 }
 .btn-outline-dark:hover {
-  border-color: var(--gray-300);
-  background: var(--gray-50);
+  border-color: var(--mtb-navy);
+  background: var(--mtb-light-gray);
 }
 
 /* ─── Card ───────────────────────────────────────────────────── */
 .card {
   background: var(--white);
-  border: 1px solid var(--gray-200);
+  border: 1px solid var(--mtb-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 .card:hover {
-  border-color: rgba(63, 185, 80, 0.45);
-  box-shadow: 0 10px 28px rgba(0,0,0,0.07), 0 0 0 1px rgba(63, 185, 80, 0.15);
+  border-color: rgba(8, 45, 91, 0.35);
+  box-shadow: 0 10px 28px rgba(8, 45, 91, 0.08), 0 0 0 1px rgba(8, 45, 91, 0.1);
   transform: translateY(-2px);
 }
 
-/* ─── Badge ──────────────────────────────────────────────────── */
-.badge-green {
+/* ─── MTB Brand Badges (Section 05) ───────────────────────────── */
+.badge-navy {
   display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  background: var(--green-dim);
-  border: 1px solid var(--green-border);
-  color: var(--green);
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--mtb-navy);
+  color: #FFFFFF;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  text-transform: uppercase;
+}
+.badge-red {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--mtb-red);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-green {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--mtb-green);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-blue {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--mtb-blue);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.badge-outline {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  border: 1px solid var(--mtb-border);
+  color: var(--mtb-dark-gray);
+  font-size: 0.72rem;
+  font-weight: 600;
 }
 
 /* ─── Divider ────────────────────────────────────────────────── */

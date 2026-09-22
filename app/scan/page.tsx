@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import MTBLogo from '@/components/MTBLogo';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './scan.module.css';
@@ -61,7 +62,7 @@ export default function ScanPage() {
           if (html5QrCodeRef.current.isScanning) {
             await html5QrCodeRef.current.stop();
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const { Html5Qrcode } = await import('html5-qrcode');
@@ -203,8 +204,8 @@ export default function ScanPage() {
           type === 'approve'
             ? [100, 50, 100]
             : type === 'already_attended'
-            ? [150, 80, 150]
-            : [300]
+              ? [150, 80, 150]
+              : [300]
         );
       }
     } catch (e) {
@@ -293,8 +294,8 @@ export default function ScanPage() {
         data.status === 'approve'
           ? 'approve'
           : data.status === 'already_attended'
-          ? 'already_attended'
-          : 'decline';
+            ? 'already_attended'
+            : 'decline';
 
       const resultItem: ScanResult = {
         status,
@@ -340,18 +341,8 @@ export default function ScanPage() {
         <div className={styles.container}>
           {/* Top bar */}
           <div className={styles.topBar}>
-            <Link href="/" className={styles.brand}>
-              <Image
-                src="/logo.jpg"
-                alt="Logo Morocco Tech Builders"
-                width={34}
-                height={34}
-                className={styles.brandLogo}
-                priority
-              />
-              <span className={styles.brandName}>
-                Morocco <span className={styles.brandSub}>Tech Builders</span>
-              </span>
+            <Link href="/" className={styles.brand} aria-label="Retour à l'accueil">
+              <MTBLogo size={34} variant="dark" />
             </Link>
 
             <Link href="/" className={styles.backLink}>
@@ -386,9 +377,8 @@ export default function ScanPage() {
                   return (
                     <div
                       key={idx}
-                      className={`${styles.pinDot} ${hasDigit ? styles.pinDotActive : ''} ${
-                        pinError ? styles.pinDotError : ''
-                      }`}
+                      className={`${styles.pinDot} ${hasDigit ? styles.pinDotActive : ''} ${pinError ? styles.pinDotError : ''
+                        }`}
                     >
                       {hasDigit ? '•' : ''}
                     </div>
@@ -453,18 +443,8 @@ export default function ScanPage() {
       <div className={styles.container}>
         {/* Top bar */}
         <div className={styles.topBar}>
-          <Link href="/" className={styles.brand}>
-            <Image
-              src="/logo.jpg"
-              alt="Logo Morocco Tech Builders"
-              width={34}
-              height={34}
-              className={styles.brandLogo}
-              priority
-            />
-            <span className={styles.brandName}>
-              Morocco <span className={styles.brandSub}>Tech Builders</span>
-            </span>
+          <Link href="/" className={styles.brand} aria-label="Retour à l'accueil">
+            <MTBLogo size={34} variant="dark" />
           </Link>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -742,24 +722,22 @@ export default function ScanPage() {
           {/* Result Alert Box */}
           {latestResult && (
             <div
-              className={`${styles.resultBox} ${
-                latestResult.status === 'approve'
+              className={`${styles.resultBox} ${latestResult.status === 'approve'
                   ? styles.resultApprove
                   : latestResult.status === 'already_attended'
-                  ? styles.resultAlreadyAttended
-                  : styles.resultDecline
-              }`}
+                    ? styles.resultAlreadyAttended
+                    : styles.resultDecline
+                }`}
               role="alert"
             >
               <div className={styles.resultHeader}>
                 <div
-                  className={`${styles.resultIcon} ${
-                    latestResult.status === 'approve'
+                  className={`${styles.resultIcon} ${latestResult.status === 'approve'
                       ? styles.iconApprove
                       : latestResult.status === 'already_attended'
-                      ? styles.iconAlreadyAttended
-                      : styles.iconDecline
-                  }`}
+                        ? styles.iconAlreadyAttended
+                        : styles.iconDecline
+                    }`}
                 >
                   {latestResult.status === 'approve' ? (
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
@@ -781,19 +759,18 @@ export default function ScanPage() {
 
                 <div>
                   <h2
-                    className={`${styles.resultTitle} ${
-                      latestResult.status === 'approve'
+                    className={`${styles.resultTitle} ${latestResult.status === 'approve'
                         ? styles.titleApprove
                         : latestResult.status === 'already_attended'
-                        ? styles.titleAlreadyAttended
-                        : styles.titleDecline
-                    }`}
+                          ? styles.titleAlreadyAttended
+                          : styles.titleDecline
+                      }`}
                   >
                     {latestResult.status === 'approve'
                       ? 'ACCÈS AUTORISÉ'
                       : latestResult.status === 'already_attended'
-                      ? 'DÉJÀ VALIDÉ (DÉJÀ ENTRÉ) ⚠️'
-                      : 'ACCÈS REFUSÉ'}
+                        ? 'DÉJÀ VALIDÉ (DÉJÀ ENTRÉ) ⚠️'
+                        : 'ACCÈS REFUSÉ'}
                   </h2>
                   <span style={{ fontSize: '0.8rem', color: 'var(--text-dark-b)' }}>
                     Scanné à {latestResult.scannedAt}
@@ -866,13 +843,12 @@ export default function ScanPage() {
                 <li key={idx} className={styles.historyItem}>
                   <div className={styles.historyLeft}>
                     <span
-                      className={`${styles.historyBadge} ${
-                        item.status === 'approve'
+                      className={`${styles.historyBadge} ${item.status === 'approve'
                           ? styles.badgeApprove
                           : item.status === 'already_attended'
-                          ? styles.badgeAlreadyAttended
-                          : styles.badgeDecline
-                      }`}
+                            ? styles.badgeAlreadyAttended
+                            : styles.badgeDecline
+                        }`}
                     >
                       {item.status === 'approve' ? 'Approuvé' : item.status === 'already_attended' ? 'Déjà Entré' : 'Refusé'}
                     </span>

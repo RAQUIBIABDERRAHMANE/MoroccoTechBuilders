@@ -1,7 +1,9 @@
 'use client';
 
 import React from 'react';
+import MTBLogo from './MTBLogo';
 import styles from './DigitalPassModal.module.css';
+import Link from 'next/link';
 
 export interface PassData {
   ticketId: string;
@@ -44,7 +46,7 @@ export default function DigitalPassModal({ pass, onClose }: DigitalPassModalProp
           <div className={styles.ticketMain}>
             <div className={styles.ticketHeader}>
               <div className={styles.brandRow}>
-                <span className={styles.brandBadge}>MTB</span>
+                <MTBLogo size={28} variant="icon" />
                 <div>
                   <h4 className={styles.ticketInstitution}>Morocco Tech Builders</h4>
                   <p className={styles.ticketSub}>OFPPT Marrakech · Développement Digital</p>
@@ -93,9 +95,9 @@ export default function DigitalPassModal({ pass, onClose }: DigitalPassModalProp
           {/* QR Stub Section */}
           <div className={styles.ticketStub}>
             <div className={styles.qrBox}>
-              <img 
-                src={pass.qrCodeUrl} 
-                alt={`QR Code pour ${pass.fullName}`} 
+              <img
+                src={pass.qrCodeUrl && !pass.qrCodeUrl.includes('api.qrserver.com') ? pass.qrCodeUrl : `/api/qr?data=${encodeURIComponent(`${pass.fullName}-${pass.classe}`)}`}
+                alt={`QR Code pour ${pass.fullName}`}
                 className={styles.qrCode}
               />
             </div>
@@ -125,15 +127,35 @@ export default function DigitalPassModal({ pass, onClose }: DigitalPassModalProp
 
         {/* Action Buttons */}
         <div className={styles.actions}>
-          <button className="btn-green" onClick={handlePrint} style={{ flex: 1 }}>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <Link
+            href="/profile"
+            className="btn-navy"
+            style={{
+              flex: 1.2,
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              padding: '9px 16px',
+              fontSize: '0.88rem'
+            }}
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+            Accéder à mon Profil
+          </Link>
+          <button className="btn-outline-dark" onClick={handlePrint} style={{ flex: 0.8, fontSize: '0.88rem' }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <polyline points="6 9 6 2 18 2 18 9" />
               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
               <rect width="12" height="8" x="6" y="14" />
             </svg>
-            Imprimer / Enregistrer
+            Imprimer
           </button>
-          <button className="btn-outline-dark" onClick={onClose} style={{ flex: 0.4 }}>
+          <button className="btn-outline-dark" onClick={onClose} style={{ flex: 0.4, fontSize: '0.88rem' }}>
             Fermer
           </button>
         </div>

@@ -1,9 +1,9 @@
 .footer {
-  background: var(--hero-bg);
-  border-top: 1px solid rgba(255,255,255,0.08);
+  background: var(--mtb-navy-dark);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.topBar { padding: 52px 0 48px; }
+.topBar { padding: 56px 0 48px; }
 
 .topInner {
   display: grid;
@@ -14,52 +14,35 @@
 
 /* Brand */
 .brand {}
-.brandLogo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
-}
-.brandLogoImg {
-  border-radius: var(--radius-sm);
-  object-fit: cover;
-  box-shadow: 0 0 10px rgba(63, 185, 80, 0.25);
-}
-.brandName {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #fff;
-}
-.brandSub { font-weight: 400; opacity: 0.6; }
 .brandDesc {
-  font-size: 0.83rem;
-  color: var(--text-dark-b);
+  font-size: 0.86rem;
+  color: rgba(255, 255, 255, 0.7);
   line-height: 1.65;
-  max-width: 300px;
+  max-width: 320px;
 }
 
 /* Links */
 .links {
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 10px;
 }
 .linksTitle {
-  font-size: 0.7rem;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--text-dark-b);
+  color: var(--mtb-green);
   margin-bottom: 4px;
-  font-family: var(--font-mono);
 }
 .links a {
-  font-size: 0.86rem;
-  color: rgba(255,255,255,0.55);
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
   transition: color 0.15s;
   cursor: pointer;
 }
-.links a:hover { color: #fff; }
+.links a:hover { color: var(--mtb-red); }
 
 /* Info */
 .info {

@@ -1,18 +1,19 @@
 import { NextResponse } from 'next/server';
+import { markRegistrationAttended } from '@/lib/user-service';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { data } = body;
+    const dataInput = body.data || body.code || body.qr;
 
-    if (!data || typeof data !== 'string' || !data.trim()) {
+    if (!dataInput || typeof dataInput !== 'string' || !dataInput.trim()) {
       return NextResponse.json(
         { success: false, error: 'Données de scan QR manquantes.' },
         { status: 400 }
       );
     }
 
-    const cleanData = data.trim();
+    const cleanData = dataInput.trim();
     const parts = cleanData.split('-');
     const fullName = parts.slice(0, -1).join('-').trim() || parts[0]?.trim() || '';
     const classe = parts.length > 1 ? parts[parts.length - 1].trim().toUpperCase() : '';
@@ -20,11 +21,29 @@ export async function POST(request: Request) {
     const scanWebhookUrl =
       process.env.EVENT_SCAN_WEBHOOK_URL ||
       process.env.N8N_SCAN_WEBHOOK_URL ||
-      'https://n8n.raquibi.com/webhook-test/event-qr-scan';
+      'https://n8n.raquibi.com/webhook/event-qr-scans';
 
     let scanStatus: 'approve' | 'already_attended' | 'decline' = 'decline';
     let rawResponse = '';
     let message = '';
+
+    // 1. Sync with Turso Database
+    let tursoAttendee: any = null;
+    try {
+      const tursoRes = await markRegistrationAttended(cleanData);
+      if (tursoRes.success) {
+        tursoAttendee = tursoRes.user;
+        if (tursoRes.alreadyAttended) {
+          scanStatus = 'already_attended';
+          message = 'Ce participant a déjà été scanné et est déjà dans la salle. Ré-entrée refusée.';
+        } else {
+          scanStatus = 'approve';
+          message = 'Accès autorisé ! Statut mis à jour et présence enregistrée.';
+        }
+      }
+    } catch (dbErr) {
+      console.warn('Turso scan sync warning:', dbErr);
+    }
 
     try {
       const res = await fetch(scanWebhookUrl, {

@@ -1,73 +1,235 @@
 'use client';
 
-import React from 'react';
-import Image from 'next/image';
+import React, { useState } from 'react';
+import Link from 'next/link';
 import Countdown from './Countdown';
 import styles from './Hero.module.css';
 
 export default function Hero() {
+  const [attendeeName, setAttendeeName] = useState('');
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Mouse tracking to tilt around the signature isometric angle
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    // Subtle tilt response around the natural isometric rotation
+    const rotateX = -(y / (rect.height / 2)) * 8;
+    const rotateY = (x / (rect.width / 2)) * 10;
+    setTilt({ x: rotateX, y: rotateY });
+  };
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
+    setIsHovered(false);
+  };
+
+  const handlePreFillAndScroll = () => {
+    if (attendeeName.trim() && typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('mtb_prefill_name', { detail: attendeeName.trim() }));
+    }
+  };
+
+  // Full name displayed on the card
+  const rawName = attendeeName.trim() || 'Abderrahmane Raquibi';
+  const displayCardName = rawName.includes('OFPPT') ? rawName : `${rawName} - OFPPT DD`;
+
   return (
     <section className={styles.hero} aria-label="Événement principal">
-      {/* Top eyebrow bar */}
+      {/* Light Eyebrow Notification Bar */}
       <div className={styles.eyebrow}>
-        <span className={styles.eyebrowDot} aria-hidden="true" />
-        Morocco Tech Builders · Développement Digital · OFPPT Marrakech
+        <div className="container">
+          <div className={styles.eyebrowInner}>
+            <span className={styles.eyebrowBadge}>
+              <span className={styles.eyebrowDot} aria-hidden="true" />
+              Édition Officielle 2026
+            </span>
+            <span className={styles.eyebrowText}>
+              Atelier Pratique Présentiel · Salle Polyvalente, Complexe OFPPT Marrakech
+            </span>
+            <span className={styles.eyebrowFree}>Pass 100% Gratuit</span>
+          </div>
+        </div>
       </div>
 
       <div className={`container ${styles.grid}`}>
-        {/* ── Left: Text ── */}
+        {/* ── Left Column: Editorial & Live Customization ── */}
         <div className={styles.textCol}>
-          <p className={styles.edition}>SAISON 2026</p>
+          <div className={styles.categoryBadge}>
+            <span className={styles.badgeStar} aria-hidden="true">★</span>
+            Session Spéciale Stagiaires Développement Digital (OFPPT)
+          </div>
 
           <h1 className={styles.title}>
             Construire sa{' '}
-            <span className={styles.titleGreen}>Présence&nbsp;en&nbsp;Ligne</span>
-            {' '}—{' '}
-            Stagiaires<br />
-            Développement Digital
+            <span className={styles.titleRed}>Présence en Ligne</span>
+            <span className={styles.titleSub}>
+              Le guide pratique pour valoriser vos compétences et décrocher votre stage PFE
+            </span>
           </h1>
 
-          <div className={styles.meta}>
-            <div className={styles.metaItem}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-              OCTOBRE 2026
-            </div>
-            <div className={styles.metaDot} aria-hidden="true" />
-            <div className={styles.metaItem}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-              SALLE DE CONFÉRENCE, OFPPT
+          <p className={styles.description}>
+            Transformez vos dépôts scolaires en une vitrine d'ingénierie percutante. Repartez avec un profil <strong>GitHub</strong> audité, un <strong>Portfolio</strong> déployé et un profil <strong>LinkedIn</strong> qui attire les recruteurs IT au Maroc.
+          </p>
+
+          {/* Interactive Live Name Customizer Box */}
+          <div className={styles.personalizerBox}>
+            <label htmlFor="heroNameInput" className={styles.personalizerLabel}>
+              <span className={styles.sparkle} aria-hidden="true">✨</span>
+              <span>Personnalisez votre Pass en direct :</span>
+            </label>
+            <div className={styles.inputWrapper}>
+              <input
+                id="heroNameInput"
+                type="text"
+                value={attendeeName}
+                onChange={(e) => setAttendeeName(e.target.value)}
+                placeholder="Tapez votre prénom & nom (ex: Yassine El Amrani)"
+                className={styles.nameInput}
+                maxLength={30}
+              />
+              {attendeeName && (
+                <button
+                  type="button"
+                  onClick={() => setAttendeeName('')}
+                  className={styles.clearBtn}
+                  aria-label="Effacer le nom"
+                >
+                  ✕
+                </button>
+              )}
             </div>
           </div>
 
+          {/* Value Checklist */}
+          <div className={styles.perksList} role="list" aria-label="Avantages de l'atelier">
+            <div className={styles.perk} role="listitem">
+              <span className={styles.checkIcon}>✓</span>
+              <span>Pass QR Nominatif Immédiat</span>
+            </div>
+            <div className={styles.perk} role="listitem">
+              <span className={styles.checkIcon}>✓</span>
+              <span>4 Livrables Concrets Déployés</span>
+            </div>
+            <div className={styles.perk} role="listitem">
+              <span className={styles.checkIcon}>✓</span>
+              <span>100% Gratuit sur Inscription</span>
+            </div>
+          </div>
+
+          {/* CTAs */}
           <div className={styles.ctas}>
-            <a href="#inscription" className="btn-green">
-              S'inscrire — Gratuit
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-            </a>
-            <a href="#programme" className="btn-outline-white">
-              Voir le programme
-            </a>
+            <Link
+              href="#inscription"
+              onClick={handlePreFillAndScroll}
+              className="btn-red"
+            >
+              <span>Réserver mon Pass Gratuit</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                <path d="m9 18 6-6-6-6" />
+              </svg>
+            </Link>
+            <Link href="#programme" className={styles.btnOutlineNavy}>
+              Explorer les 6 modules
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </Link>
           </div>
 
-          <div className={styles.countdownWrap}>
+
+
+          <div className={styles.countdownBox}>
             <Countdown />
           </div>
         </div>
 
-        {/* ── Right: 3D Visual ── */}
-        <div className={styles.visualCol} aria-hidden="true">
-          <div className={styles.visualFrame}>
-            <Image
-              src="/hero-visual.jpg"
-              alt=""
-              fill
-              className={styles.heroImg}
-              priority
-              sizes="(max-width: 900px) 100vw, 50vw"
-            />
-            {/* Overlay gradient to blend edges */}
-            <div className={styles.visualOverlayLeft} />
-            <div className={styles.visualOverlayBottom} />
+        {/* ── Right Column: The Exact Isometric 3D Event Pass Card ── */}
+        <div className={styles.visualCol}>
+          <div
+            className={styles.perspectiveStage}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* The Isometric 3D Card */}
+            <div
+              className={`${styles.isoCard} ${isHovered ? styles.isoCardHovered : ''}`}
+              style={{
+                transform: `rotateX(${20 + tilt.x}deg) rotateY(${-16 + tilt.y}deg) rotateZ(12deg)`,
+              }}
+            >
+              {/* Card Physical Edge Bevel */}
+              <div className={styles.cardBevelEdge} aria-hidden="true" />
+
+              {/* Holographic Foil Corner Ribbon (Top Right) */}
+              <div className={styles.topRightHoloRibbon} aria-hidden="true" />
+
+              {/* Holographic Foil Corner Ribbon (Bottom Left) */}
+              <div className={styles.bottomLeftHoloRibbon} aria-hidden="true" />
+
+              {/* Top-Left Deep Navy Banner */}
+              <div className={styles.eventPassBanner}>
+                <span>EVENT PASS</span>
+              </div>
+
+              {/* Card Main Body Content */}
+              <div className={styles.cardContent}>
+                {/* Attendee Name Block */}
+                <div className={styles.attendeeBlock}>
+                  <span className={styles.attendeeSubtitle}>Attendee name</span>
+                  <h3 className={styles.attendeeTitle} title={displayCardName}>
+                    {displayCardName}
+                  </h3>
+                </div>
+
+                {/* Bottom Row: Glowing QR Code + Divider + Event Meta */}
+                <div className={styles.bottomCardRow}>
+                  {/* Glowing QR Box */}
+                  <div className={styles.qrGlowFrame}>
+                    {/* Glowing Corner Brackets */}
+                    <span className={`${styles.cornerBracket} ${styles.tl}`} />
+                    <span className={`${styles.cornerBracket} ${styles.tr}`} />
+                    <span className={`${styles.cornerBracket} ${styles.bl}`} />
+                    <span className={`${styles.cornerBracket} ${styles.br}`} />
+
+                    <svg
+                      width="72"
+                      height="72"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#082D5B"
+                      strokeWidth="1.8"
+                      className={styles.qrSvg}
+                    >
+                      <rect width="18" height="18" x="3" y="3" rx="2" />
+                      <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01" />
+                      <rect width="3.5" height="3.5" x="6" y="6" fill="#082D5B" stroke="none" />
+                      <rect width="3.5" height="3.5" x="14.5" y="6" fill="#082D5B" stroke="none" />
+                      <rect width="3.5" height="3.5" x="6" y="14.5" fill="#082D5B" stroke="none" />
+                      <path d="M12 7v4M12 15v2M15 12h2M10.5 12h2.5M15 16h2" />
+                    </svg>
+                  </div>
+
+                  {/* Right: Thin Line + Event Info */}
+                  <div className={styles.footerInfoBox}>
+                    <div className={styles.thinDivider} />
+                    <p className={styles.footerOfficialText}>
+                      PASS OFFICIEL 2026 · SALLE POLYVALENTE OFPPT MARRAKECH
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Soft Ambient Diffuse Drop Shadow Under the Card */}
+            <div className={styles.ambientDropShadow} aria-hidden="true" />
           </div>
         </div>
       </div>

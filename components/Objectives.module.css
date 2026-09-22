@@ -1,49 +1,122 @@
-.header { margin-bottom: 40px; }
+.header {
+  margin-bottom: 48px;
+}
 
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: 20px;
 }
 
 .card {
-  padding: 24px;
+  padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
+  background: var(--white);
+  border: 1px solid var(--mtb-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 2px 8px rgba(8, 45, 91, 0.03);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease;
+  position: relative;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(8, 45, 91, 0.08), 0 0 0 1px rgba(8, 45, 91, 0.12);
+  border-color: rgba(8, 45, 91, 0.25);
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
 }
 
 .iconWrap {
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   border-radius: var(--radius-md);
-  background: rgba(63,185,80,0.1);
-  border: 1px solid rgba(63,185,80,0.2);
+  background: rgba(8, 45, 91, 0.06);
+  border: 1px solid rgba(8, 45, 91, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--green-dark);
-  transition: all 0.22s ease;
+  color: var(--mtb-navy);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card:hover .iconWrap {
-  background: rgba(63, 185, 80, 0.18);
-  border-color: rgba(63, 185, 80, 0.45);
-  transform: scale(1.08);
+  background: var(--mtb-red);
+  border-color: var(--mtb-red);
+  color: #FFFFFF;
+  transform: scale(1.05);
+}
+
+.stepNum {
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: var(--mtb-gray);
+  opacity: 0.65;
+  background: rgba(8, 45, 91, 0.04);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
 }
 
 .cardTitle {
-  font-size: 0.95rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
   font-weight: 700;
-  color: var(--text-light-h);
+  color: var(--mtb-navy);
   line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
 .cardDesc {
-  font-size: 0.85rem;
-  color: var(--text-light-b);
+  font-size: 0.875rem;
+  color: var(--mtb-dark-gray);
   line-height: 1.6;
+  flex-grow: 1;
 }
 
-@media (max-width: 960px) { .grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 500px) { .grid { grid-template-columns: 1fr; } }
+.cardFooter {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(8, 45, 91, 0.08);
+}
+
+.deliverableBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #047857;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.24);
+  border-radius: var(--radius-pill);
+  padding: 4px 10px;
+  line-height: 1.3;
+}
+
+.deliverableBadge svg {
+  color: var(--mtb-green);
+  flex-shrink: 0;
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 580px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

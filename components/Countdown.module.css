@@ -5,18 +5,18 @@
 }
 
 .label {
-  font-size: 0.72rem;
-  font-family: var(--font-mono);
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--text-dark-b);
+  color: var(--mtb-gray);
 }
 
 .grid {
   display: flex;
   align-items: stretch;
-  gap: 6px;
+  gap: 8px;
 }
 
 .unit {
@@ -25,36 +25,38 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.10);
+  background: var(--white);
+  border: 1px solid var(--mtb-border);
   border-radius: var(--radius-md);
-  padding: 12px 8px 10px;
+  padding: 10px 10px 8px;
+  box-shadow: 0 2px 6px rgba(8, 45, 91, 0.04);
 }
 
 .value {
-  font-family: var(--font-mono);
-  font-size: 1.9rem;
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
   font-weight: 800;
-  color: var(--green);
+  color: var(--mtb-navy);
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 
 .unitLabel {
-  font-size: 0.6rem;
-  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-family: var(--font-heading);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-dark-b);
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  color: var(--mtb-gray);
 }
 
 .sep {
-  font-family: var(--font-mono);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--green);
-  opacity: 0.4;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--mtb-red);
+  opacity: 0.7;
   flex-shrink: 0;
-  align-self: flex-start;
-  padding-top: 10px;
+  align-self: center;
+  padding-bottom: 8px;
 }

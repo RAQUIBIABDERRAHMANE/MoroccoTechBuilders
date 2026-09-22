@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Countdown.module.css';
 
+
 interface TimeLeft {
   days: number;
   hours: number;
@@ -23,9 +24,12 @@ function getTimeLeft(): TimeLeft {
 }
 
 export default function Countdown() {
-  const [tl, setTl] = useState<TimeLeft>(getTimeLeft());
+  const [mounted, setMounted] = useState(false);
+  const [tl, setTl] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   useEffect(() => {
+    setMounted(true);
+    setTl(getTimeLeft());
     const id = setInterval(() => setTl(getTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
@@ -44,7 +48,9 @@ export default function Countdown() {
         {units.map(({ value, label }, i) => (
           <React.Fragment key={label}>
             <div className={styles.unit}>
-              <span className={styles.value}>{String(value).padStart(2, '0')}</span>
+              <span className={styles.value} suppressHydrationWarning>
+                {mounted ? String(value).padStart(2, '0') : '00'}
+              </span>
               <span className={styles.unitLabel}>{label}</span>
             </div>
             {i < 3 && <span className={styles.sep} aria-hidden="true">:</span>}

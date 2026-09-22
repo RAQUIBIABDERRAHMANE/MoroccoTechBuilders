@@ -1,6 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
+import MTBLogo from './MTBLogo';
 import styles from './Footer.module.css';
+import Link from 'next/link';
 
 export default function Footer() {
   return (
@@ -9,30 +10,23 @@ export default function Footer() {
         <div className="container">
           <div className={styles.topInner}>
             <div className={styles.brand}>
-              {/* Logo */}
-              <div className={styles.brandLogo}>
-                <Image
-                  src="/logo.jpg"
-                  alt="Logo Morocco Tech Builders"
-                  width={30}
-                  height={30}
-                  className={styles.brandLogoImg}
-                />
-                <span className={styles.brandName}>Morocco <span className={styles.brandSub}>Tech Builders</span></span>
+              {/* Official Brand Logo */}
+              <div style={{ marginBottom: '16px' }}>
+                <MTBLogo size={38} variant="dark" showTagline />
               </div>
               <p className={styles.brandDesc}>
-                Morocco Tech Builders — Session d'échange & atelier pratique sur la valorisation de la présence en ligne pour les stagiaires développeurs.
+                Morocco Tech Builders — A community for builders, learners, creators and innovators. Atelier pratique pour les stagiaires développeurs.
               </p>
             </div>
 
             <nav className={styles.links} aria-label="Liens du pied de page">
               <p className={styles.linksTitle}>Navigation</p>
-              <a href="#programme">Programme</a>
-              <a href="#objectifs">Objectifs</a>
-              <a href="#intervenant">Intervenant</a>
-              <a href="#inscription">S'inscrire</a>
-              <a href="#faq">FAQ</a>
-              <a href="/scan" style={{ color: 'var(--green)', fontWeight: '600' }}>Contrôle d'accès</a>
+              <Link href="#programme">Programme</Link>
+              <Link href="#objectifs">Objectifs</Link>
+              <Link href="#intervenant">Intervenant</Link>
+              <Link href="#inscription">S'inscrire</Link>
+              <Link href="#faq">FAQ</Link>
+              
             </nav>
 
             <div className={styles.info}>

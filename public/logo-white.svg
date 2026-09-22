@@ -1,0 +1,18 @@
+<svg width="400" height="120" viewBox="0 0 400 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Left Blue/Navy Chevron (tinted for dark background contrast) -->
+  <path d="M20 95L54 28L68 52L44 95H20Z" fill="#38BDF8"/>
+  
+  <!-- Right Moroccan Red Chevron -->
+  <path d="M58 52L72 28L106 95H82L66 62L58 52Z" fill="#E11D2E"/>
+  
+  <!-- Moroccan Green 5-point Star -->
+  <polygon points="63,8 66.5,18 77,18 68.5,24.5 71.5,35 63,29 54.5,35 57.5,24.5 49,18 59.5,18" fill="#10B981"/>
+  
+  <!-- Text: Morocco Tech Builders -->
+  <text x="122" y="52" fill="#FFFFFF" font-family="'Plus Jakarta Sans', Inter, -apple-system, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">Morocco</text>
+  <text x="122" y="82" fill="#FFFFFF" font-family="'Plus Jakarta Sans', Inter, -apple-system, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">Tech Builders</text>
+  <text x="320" y="82" fill="#E11D2E" font-family="'Plus Jakarta Sans', Inter, -apple-system, sans-serif" font-size="18" font-weight="700">(MTB)</text>
+  
+  <!-- Tagline -->
+  <text x="124" y="104" fill="rgba(255, 255, 255, 0.7)" font-family="'Plus Jakarta Sans', Inter, -apple-system, sans-serif" font-size="10.5" font-weight="700" letter-spacing="2">BUILD · LEARN · CONNECT · IMPACT</text>
+</svg>

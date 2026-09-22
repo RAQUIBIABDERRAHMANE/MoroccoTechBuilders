@@ -2,19 +2,27 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  max-width: 720px;
-  margin: 40px auto 0;
-  border: 1px solid var(--gray-200);
+  max-width: 760px;
+  margin: 44px auto 0;
+  border: 1px solid var(--mtb-border);
   border-radius: var(--radius-xl);
   overflow: hidden;
+  box-shadow: 0 4px 20px rgba(8, 45, 91, 0.04);
 }
 
 .item {
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--mtb-border);
   background: var(--white);
+  transition: background 0.18s ease;
 }
-.item:last-child { border-bottom: none; }
-.item.open { background: var(--gray-50); }
+
+.item:last-child {
+  border-bottom: none;
+}
+
+.item.open {
+  background: var(--mtb-light-gray);
+}
 
 .question {
   display: flex;
@@ -22,28 +30,38 @@
   align-items: center;
   gap: 16px;
   width: 100%;
-  padding: 18px 24px;
+  padding: 20px 26px;
   background: transparent;
   border: none;
   cursor: pointer;
   text-align: left;
-  font-size: 0.93rem;
-  font-weight: 600;
-  color: var(--text-light-h);
-  transition: background 0.15s;
+  font-family: var(--font-heading);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--mtb-navy);
+  transition: color 0.18s ease, background 0.15s ease;
 }
-.question:hover { background: var(--gray-50); }
+
+.question:hover {
+  background: rgba(8, 45, 91, 0.03);
+  color: var(--mtb-red);
+}
 
 .chevron {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  color: var(--text-light-b);
-  transition: transform 0.22s ease, color 0.15s;
+  color: var(--mtb-gray);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), color 0.18s ease;
 }
+
 .open .chevron {
   transform: rotate(180deg);
-  color: var(--green-dark);
+  color: var(--mtb-red);
+}
+
+.open .question {
+  color: var(--mtb-navy);
 }
 
 .answerWrapper {
@@ -57,17 +75,17 @@
 .answerWrapper.open {
   grid-template-rows: 1fr;
   opacity: 1;
-  border-top: 1px solid var(--gray-100);
+  border-top: 1px solid var(--mtb-border);
 }
 
 .answerInner {
   min-height: 0;
-  padding: 0 24px 18px;
+  padding: 0 26px 20px;
 }
 
 .answerInner p {
-  font-size: 0.875rem;
-  color: var(--text-light-b);
+  font-size: 0.9rem;
+  color: var(--mtb-dark-gray);
   line-height: 1.7;
   padding-top: 14px;
 }

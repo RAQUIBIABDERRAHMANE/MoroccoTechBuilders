@@ -19,7 +19,7 @@
   position: relative;
   max-height: 92vh;
   overflow-y: auto;
-  border-top: 3px solid var(--green);
+  border-top: 4px solid var(--mtb-red);
 }
 
 .closeButton {

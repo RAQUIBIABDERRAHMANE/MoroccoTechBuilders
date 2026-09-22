@@ -111,7 +111,9 @@ Events/
 │   └── *.module.css             # Modules CSS pour chaque composant
 ├── public/
 │   ├── hero-visual.jpg          # Visuel 3D principal
-│   └── logo.jpg                 # Logo officiel
+│   ├── logo.svg                 # Logo officiel vectoriel MTB
+│   ├── logo-white.svg           # Logo officiel fond sombre
+│   └── icon.svg                 # Favicon officiel MTB
 ├── Event QR Email.json          # Workflow complet n8n (Webhooks, QR, Emails, Scan)
 ├── .env.example                 # Modèle des variables d'environnement
 ├── next.config.mjs              # Configuration Next.js (optimisation images)

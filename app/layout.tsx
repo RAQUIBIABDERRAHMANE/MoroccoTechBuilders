@@ -21,11 +21,15 @@ export const metadata: Metadata = {
     description: 'Atelier pratique pour valoriser votre profil de développeur.',
     type: 'website',
     locale: 'fr_MA',
-    images: ['/logo.jpg'],
+    images: ['/logo.svg'],
   },
   icons: {
-    icon: '/logo.jpg',
-    apple: '/logo.jpg',
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
   },
 };
 
@@ -35,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={inter.variable}>
-      <body>{children}</body>
+    <html lang="fr" className={inter.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <body suppressHydrationWarning>{children}</body>
     </html>
   );
 }

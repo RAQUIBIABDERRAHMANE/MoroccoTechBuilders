@@ -33,3 +33,7 @@ Event QR Email.json
 .claude/
 .agents/
 .impeccable/
+
+# Corrupt disk files
+public/pass-3d-reference.png
+public/logo-icon.png
