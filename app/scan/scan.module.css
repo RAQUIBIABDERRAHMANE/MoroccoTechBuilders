@@ -371,6 +371,206 @@
   color: #56d364;
 }
 
+/* Mode Tab NFC Badge */
+.nfcBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+}
+
+/* NFC Contactless Scanner Container */
+.nfcWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 20px 24px;
+  background: linear-gradient(180deg, rgba(8, 45, 91, 0.4) 0%, rgba(2, 6, 23, 0.8) 100%);
+  border: 2px solid rgba(56, 189, 248, 0.25);
+  border-radius: var(--radius-xl);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Concentric Radar Waves */
+.nfcRadarBox {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.nfcWave1,
+.nfcWave2,
+.nfcWave3 {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid #38bdf8;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nfcWaveActive1 {
+  width: 90px;
+  height: 90px;
+  animation: nfcRadarPulse 2.8s infinite cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+.nfcWaveActive2 {
+  width: 140px;
+  height: 140px;
+  animation: nfcRadarPulse 2.8s infinite 0.7s cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+.nfcWaveActive3 {
+  width: 190px;
+  height: 190px;
+  animation: nfcRadarPulse 2.8s infinite 1.4s cubic-bezier(0.2, 0.8, 0.4, 1);
+}
+
+@keyframes nfcRadarPulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+    border-color: #10b981;
+  }
+  50% {
+    opacity: 0.35;
+    border-color: #38bdf8;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+    border-color: #082d5b;
+  }
+}
+
+.nfcCenterCircle {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #082D5B 0%, #031429 100%);
+  border: 2px solid #38bdf8;
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.35), inset 0 0 12px rgba(56, 189, 248, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #38bdf8;
+  z-index: 2;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.nfcReading {
+  border-color: var(--green) !important;
+  color: var(--green) !important;
+  box-shadow: 0 0 30px rgba(16, 185, 129, 0.5) !important;
+  transform: scale(1.08);
+}
+
+.nfcTitle {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.nfcDesc {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.72);
+  max-width: 440px;
+  line-height: 1.5;
+  margin: 0 auto 18px;
+}
+
+.nfcStatusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+
+.nfcStatusListening {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.4);
+  color: #10b981;
+}
+
+.nfcStatusReading {
+  background: rgba(234, 179, 8, 0.18);
+  border: 1px solid rgba(234, 179, 8, 0.45);
+  color: #facc15;
+  animation: pulseDot 1s infinite alternate;
+}
+
+.nfcStatusUnsupported {
+  background: rgba(248, 113, 113, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.35);
+  color: #f87171;
+}
+
+.nfcLivePulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.nfcTipsBox {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  max-width: 480px;
+  width: 100%;
+  text-align: left;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: 4px;
+}
+
+.nfcTipRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.nfcTipIcon {
+  color: #38bdf8;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.nfcActions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
 /* Camera Permission Warning / Helper */
 .cameraNotice {
   padding: 12px 16px;
@@ -843,4 +1043,126 @@
   color: #ff7b72;
   border-color: rgba(248, 81, 73, 0.4);
   background: rgba(248, 81, 73, 0.08);
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 20px 14px 60px;
+  }
+  .scannerCard {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+    gap: 16px;
+  }
+  .topBar {
+    padding-bottom: 16px;
+  }
+  .statsRow {
+    gap: 8px;
+  }
+  .statCard {
+    padding: 12px 8px;
+  }
+  .statNum {
+    font-size: 1.45rem;
+  }
+  .statLabel {
+    font-size: 0.65rem;
+  }
+  .inputGroup {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .scanBtn {
+    min-height: 46px;
+    justify-content: center;
+    width: 100%;
+  }
+  .resultBox {
+    padding: 18px 16px;
+  }
+  .resultHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page {
+    padding: 16px 12px 48px;
+  }
+  .modeTab {
+    padding: 8px 8px;
+    font-size: 0.78rem;
+    gap: 5px;
+  }
+  .cameraWrapper {
+    max-width: 100%;
+  }
+  .keypadBtn {
+    height: 48px;
+    font-size: 1.2rem;
+  }
+}
+
+/* ── Fullscreen Flash Overlay ─────────────────────────── */
+@keyframes flashIn {
+  0%   { opacity: 0; transform: scale(0.92); }
+  15%  { opacity: 1; transform: scale(1); }
+  75%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.04); }
+}
+
+@keyframes flashIconPop {
+  0%   { transform: scale(0.5); opacity: 0; }
+  30%  { transform: scale(1.15); opacity: 1; }
+  50%  { transform: scale(0.95); }
+  65%  { transform: scale(1.05); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.flashOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: flashIn 1.4s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.flashApprove  { background: rgba(16, 185, 129, 0.92); }
+.flashWarning  { background: rgba(245, 158, 11, 0.92); }
+.flashDecline  { background: rgba(225, 29, 46, 0.92); }
+
+.flashContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  color: #fff;
+  text-align: center;
+}
+
+.flashIcon {
+  font-size: 8rem;
+  line-height: 1;
+  font-weight: 900;
+  filter: drop-shadow(0 4px 24px rgba(0, 0, 0, 0.4));
+  animation: flashIconPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.flashLabel {
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.3));
+}
+
+@media (max-width: 480px) {
+  .flashIcon  { font-size: 5.5rem; }
+  .flashLabel { font-size: 1.6rem; }
 }

@@ -24,7 +24,7 @@ export default function MTBLogo({
   const markWidth = Math.round(size * (200 / 140));
 
   return (
-    <div className={className} style={{ display: 'inline-flex', alignItems: 'center', gap: size > 40 ? '12px' : '10px' }}>
+    <div className={className} style={{ display: 'inline-flex', alignItems: 'center', gap: size > 40 ? '12px' : '10px', whiteSpace: 'nowrap', flexShrink: 0 }}>
       {useImage ? (
         <Image
           src={isDark ? '/mtb-logo-dark-transparent.png' : '/mtb-logo-light-transparent.png'}

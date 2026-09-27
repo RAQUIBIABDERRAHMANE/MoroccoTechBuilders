@@ -47,14 +47,15 @@
 
 @media (max-width: 768px) {
   .inner { grid-template-columns: repeat(2, 1fr); }
-  .stat { padding: 16px 12px; }
-  .stat:nth-child(2) { border-right: none; }
+  .stat { padding: 14px 10px; }
+  .stat:nth-child(even) { border-right: none; }
   .stat:nth-child(1), .stat:nth-child(2) {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 }
 @media (max-width: 480px) {
-  .inner { grid-template-columns: 1fr; }
-  .stat { border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-  .stat:last-child { border-bottom: none; }
+  .strip { padding: 18px 0; }
+  .stat { padding: 10px 6px; }
+  .value { font-size: 1.55rem; }
+  .label { font-size: 0.72rem; }
 }

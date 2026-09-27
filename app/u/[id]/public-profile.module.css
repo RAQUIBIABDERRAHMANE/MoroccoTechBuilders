@@ -259,3 +259,42 @@
   font-size: 0.9rem;
   padding: 11px 24px;
 }
+
+@media (max-width: 600px) {
+  .container {
+    padding: 20px 14px 60px;
+  }
+  .profileCard {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+    gap: 18px;
+  }
+  .profileHeader {
+    gap: 14px;
+  }
+  .avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 1.5rem;
+  }
+  .name {
+    font-size: 1.35rem;
+  }
+  .socialLinks {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .socialBtn {
+    width: 100%;
+    justify-content: center;
+  }
+  .eventCard {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .joinBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

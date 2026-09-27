@@ -2,6 +2,7 @@
 
 import React from 'react';
 import MTBLogo from './MTBLogo';
+import WalletPassButtons from './WalletPassButtons';
 import styles from './DigitalPassModal.module.css';
 import Link from 'next/link';
 
@@ -104,6 +105,18 @@ export default function DigitalPassModal({ pass, onClose }: DigitalPassModalProp
             <span className={styles.qrCaption}>Scan Entrée</span>
             <span className={styles.qrSub}>Présenter à l'accueil</span>
           </div>
+        </div>
+
+        {/* Mobile Wallet Integration: Apple Wallet & Google Pay */}
+        <div style={{ margin: '4px 0' }}>
+          <WalletPassButtons
+            ticketId={pass.ticketId}
+            fullName={pass.fullName}
+            classe={pass.classe}
+            qrCodeUrl={pass.qrCodeUrl}
+            layout="row"
+            showHint={true}
+          />
         </div>
 
         {/* Delivery confirmation banner */}

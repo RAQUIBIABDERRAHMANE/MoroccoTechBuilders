@@ -228,3 +228,22 @@
 .backHome:hover {
   color: #fff !important;
 }
+
+@media (max-width: 480px) {
+  .pageWrapper {
+    padding: 16px 12px;
+  }
+  .card {
+    padding: 24px 18px;
+    border-radius: var(--radius-lg);
+  }
+  .title {
+    font-size: 1.25rem;
+  }
+  .sub {
+    font-size: 0.8rem;
+  }
+  .submitBtn {
+    min-height: 46px;
+  }
+}

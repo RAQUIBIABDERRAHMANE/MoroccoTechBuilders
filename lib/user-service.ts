@@ -298,12 +298,45 @@ export async function markRegistrationAttended(qrCodeData: string): Promise<{
 }> {
   await initDb();
   const db = getTursoClient();
-  const cleanQR = qrCodeData.trim();
+  let cleanQR = qrCodeData.trim();
 
-  // Search case-insensitively or with exact trim
+  // If payload is a URL, extract ticketId or user identifier from query or path
+  if (cleanQR.startsWith('http://') || cleanQR.startsWith('https://')) {
+    try {
+      const parsed = new URL(cleanQR);
+      const ticketParam = parsed.searchParams.get('ticketId') || parsed.searchParams.get('ticket_id') || parsed.searchParams.get('data');
+      if (ticketParam) {
+        cleanQR = ticketParam.trim();
+      } else {
+        const segments = parsed.pathname.split('/').filter(Boolean);
+        if (segments.length > 0) {
+          cleanQR = decodeURIComponent(segments[segments.length - 1]).trim();
+        }
+      }
+    } catch {
+      // Keep cleanQR as is
+    }
+  }
+
+  // If payload is a Google Wallet objectId (e.g. 3388000000023194470.MTB-2026-XXXX), extract ticketId
+  let altClean = cleanQR;
+  if (cleanQR.includes('.') && cleanQR.length > 20) {
+    const afterDot = cleanQR.split('.').pop();
+    if (afterDot) altClean = afterDot;
+  }
+
+  // Search case-insensitively across qr_code_data, ticket_id, registration id, and user_id
   const res = await db.execute({
-    sql: `SELECT * FROM event_registrations WHERE LOWER(TRIM(qr_code_data)) = LOWER(TRIM(?)) LIMIT 1`,
-    args: [cleanQR],
+    sql: `
+      SELECT * FROM event_registrations 
+      WHERE LOWER(TRIM(qr_code_data)) = LOWER(TRIM(?))
+         OR LOWER(TRIM(ticket_id)) = LOWER(TRIM(?))
+         OR LOWER(TRIM(ticket_id)) = LOWER(TRIM(?))
+         OR LOWER(TRIM(id)) = LOWER(TRIM(?))
+         OR LOWER(TRIM(user_id)) = LOWER(TRIM(?))
+      LIMIT 1
+    `,
+    args: [cleanQR, cleanQR, altClean, cleanQR, cleanQR],
   });
 
   if (res.rows.length === 0) {
@@ -370,4 +403,38 @@ export async function getUserProfileWithEvents(userId: string): Promise<UserProf
     ...user,
     registrations,
   };
+}
+
+export async function getRegistrationByTicketId(ticketId: string): Promise<{
+  registration: EventRegistrationRecord;
+  user: UserRecord | null;
+} | null> {
+  await initDb();
+  const db = getTursoClient();
+  const cleanTicket = ticketId.trim();
+
+  const res = await db.execute({
+    sql: `SELECT * FROM event_registrations WHERE LOWER(TRIM(ticket_id)) = LOWER(TRIM(?)) LIMIT 1`,
+    args: [cleanTicket],
+  });
+
+  if (res.rows.length === 0) return null;
+  const row = res.rows[0];
+
+  const registration: EventRegistrationRecord = {
+    id: String(row.id),
+    userId: String(row.user_id),
+    eventId: String(row.event_id),
+    eventName: String(row.event_name),
+    ticketId: String(row.ticket_id),
+    qrCodeData: String(row.qr_code_data),
+    qrCodeUrl: String(row.qr_code_url),
+    status: row.status as 'registered' | 'attended',
+    registeredAt: String(row.registered_at),
+    attendedAt: row.attended_at ? String(row.attended_at) : undefined,
+  };
+
+  const user = await findUserById(registration.userId);
+
+  return { registration, user };
 }

@@ -848,6 +848,14 @@
 }
 
 @media (max-width: 580px) {
+  .hero {
+    padding-top: 56px;
+  }
+  .grid {
+    gap: 32px;
+    padding-top: 16px;
+    padding-bottom: 40px;
+  }
   .eyebrowInner {
     flex-direction: column;
     align-items: flex-start;
@@ -856,46 +864,185 @@
   .eyebrowFree {
     margin-left: 0;
   }
-  .isoCard {
-    width: 340px;
-    height: 220px;
+  .title {
+    font-size: clamp(1.85rem, 7.5vw, 2.75rem);
   }
-  .eventPassBanner {
-    height: 38px;
+  .titleSub {
+    font-size: 0.55em;
+    line-height: 1.4;
+    margin-top: 8px;
+  }
+  .categoryBadge {
+    white-space: normal;
+    line-height: 1.35;
+    padding: 5px 12px;
     font-size: 0.72rem;
-    padding-left: 18px;
   }
-  .attendeeBlock {
-    top: 48px;
-    left: 20px;
+  .description {
+    font-size: 0.92rem;
+    line-height: 1.6;
   }
-  .attendeeTitle {
-    font-size: 1rem;
+  .personalizerBox {
+    max-width: 100%;
+    padding: 8px 12px;
   }
-  .bottomCardRow {
-    bottom: 14px;
-    left: 20px;
-    right: 20px;
-    gap: 12px;
+  .nameInput {
+    font-size: 16px !important;
   }
-  .qrGlowFrame {
-    width: 60px;
-    height: 60px;
+  .perksList {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    width: 100%;
   }
-  .qrSvg {
-    width: 50px;
-    height: 50px;
+  .perk {
+    width: 100%;
+    justify-content: flex-start;
   }
-  .footerOfficialText {
-    font-size: 0.52rem;
+  .ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  .ctas > a,
+  .btnOutlineNavy {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+    padding: 12px 18px;
   }
   .bottomMeta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
+    gap: 14px;
+    padding-top: 14px;
   }
   .countdownBox {
     margin-left: 0;
     width: 100%;
+  }
+
+  /* Visual 3D Card Mobile Adaptation */
+  .visualCol {
+    min-height: auto;
+    width: 100%;
+    overflow: hidden;
+    padding: 8px 0 16px;
+  }
+  .perspectiveStage {
+    max-width: 100%;
+    perspective: 750px;
+  }
+  .isoCard {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    aspect-ratio: 480 / 305;
+    min-height: 200px;
+    border-radius: 20px;
+    box-shadow: -4px 8px 22px rgba(8, 45, 91, 0.22);
+  }
+  .cardBevelEdge {
+    border-radius: 20px;
+  }
+  .eventPassBanner {
+    height: 34px;
+    width: 72%;
+    padding: 0 10px 0 14px;
+    border-top-left-radius: 20px;
+    border-bottom-right-radius: 14px;
+  }
+  .bannerContent {
+    gap: 6px;
+  }
+  .bannerText {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+  .bannerLivePill {
+    font-size: 0.55rem;
+    padding: 1px 5px;
+  }
+  .attendeeBlock {
+    top: 40px;
+    left: 14px;
+    right: 14px;
+  }
+  .attendeeHeader {
+    margin-bottom: 2px;
+  }
+  .attendeeSubtitle {
+    font-size: 0.52rem;
+  }
+  .verifiedBadge {
+    font-size: 0.52rem;
+    padding: 1px 4px;
+  }
+  .attendeeTitle {
+    font-size: 0.92rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  .attendeeRoleTag {
+    font-size: 0.52rem;
+  }
+  .bottomCardRow {
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    gap: 8px;
+  }
+  .qrGlowFrame {
+    width: 50px;
+    height: 50px;
+  }
+  .qrSvg {
+    width: 40px;
+    height: 40px;
+  }
+  .qrScanLabel {
+    display: none;
+  }
+  .footerInfoBox {
+    gap: 4px;
+    margin-bottom: 0;
+  }
+  .serialCode {
+    font-size: 0.58rem;
+  }
+  .nfcIndicator {
+    font-size: 0.52rem;
+  }
+  .footerOfficialText {
+    font-size: 0.48rem;
+    line-height: 1.2;
+  }
+  .eventDateBadge {
+    font-size: 0.52rem;
+    padding: 1px 4px;
+  }
+  .ambientDropShadow {
+    display: none;
+  }
+}
+
+@media (max-width: 360px) {
+  .isoCard {
+    max-width: 288px;
+    min-height: 185px;
+  }
+  .attendeeTitle {
+    max-width: 170px;
+    font-size: 0.85rem;
+  }
+  .qrGlowFrame {
+    width: 44px;
+    height: 44px;
+  }
+  .qrSvg {
+    width: 36px;
+    height: 36px;
   }
 }

@@ -51,7 +51,7 @@ Le projet combine une page d'atterrissage moderne, un système d'inscription ave
 ### 3. Scanner d'Entrée & Contrôle d'Accès (`/scan`)
 - **Protection par Code PIN** : Accès réservé aux organisateurs via code PIN (par défaut `2126` ou configurable via `NEXT_PUBLIC_SCAN_PIN`).
 - **Scanner Caméra Intégré** : Lecture optique en direct avec `html5-qrcode`, incluant le basculement caméra avant/arrière et la mise en pause.
-- **Saisie Manuelle & Douchette Barcode** : Mode alternatif permettant la saisie au clavier ou l'utilisation d'un lecteur code-barres USB/Bluetooth.
+- **Sans Contact NFC & Google Wallet** : Lecture sans-contact instantanée au dos de l'appareil (Web NFC / Chrome Android) pour valider directement les cartes ajoutées à Google Wallet.
 - **Contrôle d'Anti-Passback** : Détection des doubles entrées (`already_attended`), autorisations d'accès (`approve`) et rejets (`decline`).
 - **Retour Audio & Haptique** : Effets sonores synthétisés via l'API Web Audio pour confirmer immédiatement le statut aux contrôleurs à l'entrée.
 - **Historique & Statistiques** : Compteurs d'entrées en direct (Total scannés, Autorisés, Déjà entrés, Rejetés) avec historique horodaté et possibilité de réinitialisation.

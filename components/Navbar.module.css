@@ -221,6 +221,27 @@
 }
 
 @media (max-width: 768px) {
-  .nav, .navCta { display: none; }
+  .nav, .navCta, .loginLink { display: none; }
   .burger { display: flex; }
+  .inner { gap: 12px; }
+  .profileBtn {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+  }
+  .drawer {
+    padding: 16px 20px 24px;
+    max-height: calc(100vh - 64px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+@media (max-width: 480px) {
+  .profileBtn span:not(.avatarMini) {
+    display: none;
+  }
+  .profileBtn {
+    padding: 4px;
+    border-radius: 50%;
+  }
 }

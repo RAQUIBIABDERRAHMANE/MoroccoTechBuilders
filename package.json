@@ -12,14 +12,16 @@
     "@types/qrcode": "^1.5.6",
     "canvas-confetti": "^1.9.4",
     "html5-qrcode": "^2.3.8",
+    "jszip": "^3.10.2",
     "lucide-react": "^0.468.0",
-    "next": "latest",
+    "next": "^16.3.5",
     "qrcode": "^1.5.4",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
+    "@types/jszip": "^3.4.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",

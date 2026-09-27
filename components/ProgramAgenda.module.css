@@ -299,7 +299,31 @@
 }
 
 @media (max-width: 600px) {
+  .header {
+    margin-bottom: 28px;
+  }
   .grid {
     grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .moduleCard {
+    padding: 16px 14px;
+  }
+  .detailPanel {
+    padding: 20px 16px;
+    border-radius: var(--radius-lg);
+  }
+  .detailTitle {
+    font-size: 1.15rem;
+  }
+  .detailDesc {
+    font-size: 0.88rem;
+  }
+  .point {
+    font-size: 0.84rem;
+  }
+  .panelActions a {
+    width: 100%;
+    justify-content: center;
   }
 }

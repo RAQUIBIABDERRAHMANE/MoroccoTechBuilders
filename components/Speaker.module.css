@@ -257,3 +257,57 @@
     gap: 20px 12px;
   }
 }
+
+@media (max-width: 580px) {
+  .header {
+    margin-bottom: 28px;
+  }
+  .profileCol {
+    padding: 24px 16px;
+    gap: 16px;
+  }
+  .bioCol {
+    padding: 20px 16px;
+    gap: 14px;
+  }
+  .avatarPhotoFrame {
+    width: 96px;
+    height: 96px;
+  }
+  .quote {
+    font-size: 0.94rem;
+    padding-left: 12px;
+  }
+  .bio {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+  .socialLinks {
+    flex-direction: column;
+    width: 100%;
+  }
+  .socialLink {
+    width: 100%;
+    justify-content: center;
+    padding: 9px 14px;
+  }
+  .stats {
+    gap: 14px 10px;
+    padding: 16px 0;
+  }
+  .statVal {
+    font-size: 1.25rem;
+  }
+  .statLabel {
+    font-size: 0.7rem;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+  .actions a {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -37,3 +37,8 @@ Event QR Email.json
 # Corrupt disk files
 public/pass-3d-reference.png
 public/logo-icon.png
+
+# Google Service Account keys
+service-account*.json
+*wallet-key*.json
+*.json.key

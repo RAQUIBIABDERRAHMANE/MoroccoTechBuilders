@@ -60,3 +60,23 @@
   align-self: center;
   padding-bottom: 8px;
 }
+
+@media (max-width: 480px) {
+  .grid {
+    gap: 4px;
+  }
+  .unit {
+    padding: 8px 4px 6px;
+    border-radius: var(--radius-sm);
+  }
+  .value {
+    font-size: 1.2rem;
+  }
+  .unitLabel {
+    font-size: 0.58rem;
+  }
+  .sep {
+    font-size: 1rem;
+    padding-bottom: 6px;
+  }
+}

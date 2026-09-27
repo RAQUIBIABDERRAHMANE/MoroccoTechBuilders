@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import MTBLogo from '@/components/MTBLogo';
+import WalletPassButtons from '@/components/WalletPassButtons';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -65,6 +66,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState('');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -229,30 +231,222 @@ export default function ProfilePage() {
       {/* Top Bar Navigation */}
       <header className={styles.topBar}>
         <div className={styles.topBarInner}>
-          <Link href="/" className={styles.topBarBrand} aria-label="Retour à l'accueil">
-            <MTBLogo size={32} variant="dark" />
+          <Link href="/" className={styles.topBarBrand} aria-label="Retour au site Morocco Tech Builders">
+            <div className={styles.brandDesktop}>
+              <MTBLogo size={32} variant="dark" />
+            </div>
+            <div className={styles.brandMobile}>
+              <MTBLogo size={28} variant="icon" />
+              <div className={styles.brandMobileText}>
+                <span className={styles.brandMobileTitle}>MTB</span>
+                <span className={styles.brandMobileBadge}>Profil</span>
+              </div>
+            </div>
+            <div className={styles.portalDivider} aria-hidden="true" />
+            <span className={styles.portalBadge}>
+              <span className={styles.portalDot} />
+              Espace Stagiaire
+            </span>
           </Link>
 
+          {/* Desktop Nav Actions */}
           <div className={styles.topBarRight}>
-            <Link href={`/u/${user.id}`} className={styles.publicProfileBtn} target="_blank">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <Link href="/" className={styles.navLinkEvent}>
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              <span>Site de l'événement</span>
+            </Link>
+
+            <Link href={`/u/${user.id}`} className={styles.publicProfileBtn} target="_blank" rel="noopener noreferrer">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                 <polyline points="15 3 21 3 21 9" />
                 <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
-              Profil Public
+              <span>Profil Public</span>
             </Link>
 
             <button onClick={handleLogout} className={styles.logoutBtn} title="Se déconnecter">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
               </svg>
-              Déconnexion
+              <span>Déconnexion</span>
+            </button>
+          </div>
+
+          {/* Mobile Actions: Public Profile Icon + Attendee Menu Trigger */}
+          <div className={styles.topBarMobileActions}>
+            <Link
+              href={`/u/${user.id}`}
+              className={styles.mobilePublicBtn}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Voir mon profil public"
+              title="Voir mon profil public"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              <span className={styles.mobilePublicText}>Public</span>
+            </Link>
+
+            <button
+              type="button"
+              className={styles.mobileUserBtn}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-expanded={mobileMenuOpen}
+              aria-label={mobileMenuOpen ? 'Fermer le menu du profil' : 'Ouvrir le menu du profil'}
+            >
+              <div className={styles.mobileUserAvatar}>
+                {getInitials(user.fullName)}
+              </div>
+              <div className={styles.burgerIcon}>
+                <span className={`${styles.bLine} ${mobileMenuOpen ? styles.open1 : ''}`} />
+                <span className={`${styles.bLine} ${mobileMenuOpen ? styles.openHide : ''}`} />
+                <span className={`${styles.bLine} ${mobileMenuOpen ? styles.open3 : ''}`} />
+              </div>
             </button>
           </div>
         </div>
+
+        {/* Mobile Slide-down Drawer Menu */}
+        {mobileMenuOpen && (
+          <>
+            <div
+              className={styles.drawerBackdrop}
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <div className={styles.mobileDrawer} role="dialog" aria-modal="true" aria-label="Menu du profil">
+              <div className={styles.drawerUserSummary}>
+                <div className={styles.drawerAvatar}>
+                  {getInitials(user.fullName)}
+                </div>
+                <div className={styles.drawerUserInfo}>
+                  <div className={styles.drawerUserName}>{user.fullName}</div>
+                  <div className={styles.drawerUserBadges}>
+                    <span className={styles.drawerUserClass}>Classe {user.classe}</span>
+                    <span className={styles.drawerUserYear}>{user.year}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Direct Highlight Link to Public Profile */}
+              <Link
+                href={`/u/${user.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.drawerPublicPill}
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                <span>Voir ma page publique</span>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                  <polyline points="15 3 21 3 21 9" />
+                  <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
+              </Link>
+
+              <div className={styles.drawerDivider} />
+
+              <nav className={styles.drawerNav}>
+                <Link
+                  href="/"
+                  className={styles.drawerNavItem}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className={styles.drawerNavIcon}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                      <polyline points="9 22 9 12 15 12 15 22"/>
+                    </svg>
+                  </span>
+                  <div className={styles.drawerNavTexts}>
+                    <span className={styles.drawerNavTitle}>Site de l'événement</span>
+                    <span className={styles.drawerNavSub}>Retour à la page d'accueil</span>
+                  </div>
+                </Link>
+
+                <Link
+                  href={`/u/${user.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.drawerNavItem}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className={styles.drawerNavIcon}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="2" y1="12" x2="22" y2="12" />
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                    </svg>
+                  </span>
+                  <div className={styles.drawerNavTexts}>
+                    <span className={styles.drawerNavTitle}>Mon Profil Public</span>
+                    <span className={styles.drawerNavSub}>Votre vitrine visible par les recruteurs</span>
+                  </div>
+                </Link>
+
+                <a
+                  href="#pass-section"
+                  className={styles.drawerNavItem}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className={styles.drawerNavIcon}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect width="18" height="18" x="3" y="3" rx="2" />
+                      <path d="M7 7h.01M17 7h.01M7 17h.01M17 17h.01" />
+                    </svg>
+                  </span>
+                  <div className={styles.drawerNavTexts}>
+                    <span className={styles.drawerNavTitle}>Pass QR & Billetterie</span>
+                    <span className={styles.drawerNavSub}>Accès salle et Apple/Google Wallet</span>
+                  </div>
+                </a>
+
+                <a
+                  href="#editor-section"
+                  className={styles.drawerNavItem}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <span className={styles.drawerNavIcon}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
+                    </svg>
+                  </span>
+                  <div className={styles.drawerNavTexts}>
+                    <span className={styles.drawerNavTitle}>Compétences & Réseaux</span>
+                    <span className={styles.drawerNavSub}>GitHub, LinkedIn, Portfolio & Bio</span>
+                  </div>
+                </a>
+              </nav>
+
+              <div className={styles.drawerFooter}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    handleLogout();
+                  }}
+                  className={styles.drawerLogoutBtn}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                  <span>Se déconnecter</span>
+                </button>
+              </div>
+            </div>
+          </>
+        )}
       </header>
 
       <main className={styles.mainContent}>
@@ -281,9 +475,20 @@ export default function ProfilePage() {
             </div>
           </div>
 
-          <div style={{ display: 'flex', gap: '10px' }}>
-            <Link href="/" className={styles.backEventBtn}>
-              ← Site de l'événement
+          <div className={styles.heroRightActions}>
+            <Link
+              href={`/u/${user.id}`}
+              className={styles.heroShareBtn}
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Ouvrir la page de profil public"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              <span>Voir ma page publique</span>
             </Link>
           </div>
         </section>
@@ -291,7 +496,7 @@ export default function ProfilePage() {
         {/* Two Column Grid: Pass Card & Profile Editor */}
         <div className={styles.grid}>
           {/* Card 1: Official Pass & QR Code */}
-          <section className={styles.card}>
+          <section className={styles.card} id="pass-section">
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2">
@@ -322,35 +527,46 @@ export default function ProfilePage() {
                   className={styles.qrImage}
                 />
               </div>
+            </div>
 
-              <div className={styles.qrValue}>
-                {qrCodeData}
+            <div className={styles.qrValue}>
+              {qrCodeData}
+            </div>
+
+            <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>
+              {isAttended
+                ? 'Votre présence a été enregistrée avec succès à l\'accueil.'
+                : 'Présentez ce QR code à l\'équipe d\'accueil à l\'entrée pour valider votre présence.'}
+            </p>
+
+            <div className={styles.passMetaGrid}>
+              <div className={styles.passMetaItem}>
+                <div className={styles.metaLabel}>Numéro de Billet</div>
+                <div className={styles.metaVal}>{ticketId}</div>
               </div>
-
-              <p style={{ fontSize: '0.82rem', color: 'rgba(255,255,255,0.6)', margin: '0 0 16px' }}>
-                {isAttended
-                  ? 'Votre présence a été enregistrée avec succès à l\'accueil.'
-                  : 'Présentez ce QR code à l\'équipe d\'accueil à l\'entrée pour valider votre présence.'}
-              </p>
-
-              <div className={styles.passMetaGrid}>
-                <div className={styles.passMetaItem}>
-                  <div className={styles.metaLabel}>Numéro de Billet</div>
-                  <div className={styles.metaVal}>{ticketId}</div>
-                </div>
-                <div className={styles.passMetaItem}>
-                  <div className={styles.metaLabel}>Date & Heure</div>
-                  <div className={styles.metaVal}>25 Janvier 2026 · 09:30</div>
-                </div>
-                <div className={styles.passMetaItem}>
-                  <div className={styles.metaLabel}>Lieu</div>
-                  <div className={styles.metaVal}>Salle Polyvalente NTIC Marrakech</div>
-                </div>
-                <div className={styles.passMetaItem}>
-                  <div className={styles.metaLabel}>Intervenant</div>
-                  <div className={styles.metaVal}>Abderrahmane Raquibi</div>
-                </div>
+              <div className={styles.passMetaItem}>
+                <div className={styles.metaLabel}>Date & Heure</div>
+                <div className={styles.metaVal}>25 Janvier 2026 · 09:30</div>
               </div>
+              <div className={styles.passMetaItem}>
+                <div className={styles.metaLabel}>Lieu</div>
+                <div className={styles.metaVal}>Salle Polyvalente NTIC Marrakech</div>
+              </div>
+              <div className={styles.passMetaItem}>
+                <div className={styles.metaLabel}>Intervenant</div>
+                <div className={styles.metaVal}>Abderrahmane Raquibi</div>
+              </div>
+            </div>
+            <div style={{ marginTop: '16px', width: '100%' }}>
+              <WalletPassButtons
+                ticketId={ticketId}
+                fullName={user.fullName}
+                classe={user.classe}
+                qrCodeData={qrCodeData}
+                qrCodeUrl={qrDataUrl || qrFallbackUrl}
+                layout="row"
+                showHint={false}
+              />
             </div>
 
             <div className={styles.passActions}>
@@ -384,7 +600,7 @@ export default function ProfilePage() {
           </section>
 
           {/* Card 2: Developer Profile Editor */}
-          <section className={styles.card}>
+          <section className={styles.card} id="editor-section">
             <div className={styles.cardHeader}>
               <h2 className={styles.cardTitle}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2">
@@ -530,89 +746,6 @@ export default function ProfilePage() {
             </form>
           </section>
         </div>
-
-        {/* Section 3: Certificate of Attendance */}
-        {isAttended ? (
-          <section className={styles.certificateCard} id="printable-cert">
-            <div className={styles.certHeader}>
-              <div>
-                <span style={{ fontSize: '0.75rem', color: '#ffd700', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Document Officiel
-                </span>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#fff' }}>
-                  Attestation de Participation & Présence
-                </h3>
-              </div>
-              <button
-                onClick={() => window.print()}
-                className="btn-green"
-                style={{
-                  background: 'linear-gradient(135deg, #ffd700 0%, #d4af37 100%)',
-                  color: '#0d1117',
-                  border: 'none',
-                  fontWeight: '700',
-                  boxShadow: '0 0 20px rgba(255, 215, 0, 0.35)',
-                }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <polyline points="6 9 6 2 18 2 18 9" />
-                  <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                  <rect width="12" height="8" x="6" y="14" />
-                </svg>
-                Télécharger mon Attestation
-              </button>
-            </div>
-
-            <div className={styles.certPreview}>
-              <div className={styles.certTitle}>
-                Attestation de Participation
-              </div>
-              <div className={styles.certSub}>
-                Morocco Tech Builders · Communauté des Développeurs & Stagiaires OFPPT
-              </div>
-
-              <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', marginBottom: '8px' }}>
-                Ce certificat est fièrement décerné à :
-              </p>
-              <div className={styles.certRecipient}>
-                {user.fullName}
-              </div>
-
-              <p className={styles.certBody}>
-                Pour sa participation active à la conférence et à l'atelier technique
-                <strong> « Construire sa Présence en Ligne: Portfolio, Réseaux & Visibilité Professionnelle »</strong>,
-                organisé à Marrakech le <strong>25 Janvier 2026</strong>.
-              </p>
-
-              <div className={styles.certFooter}>
-                <div style={{ textAlign: 'left' }}>
-                  <div>Identifiant Certificat : <strong style={{ color: '#fff' }}>{ticketId}</strong></div>
-                  <div>Vérifiable sur : <strong style={{ color: 'var(--green)' }}>moroccotechbuilders.org/u/{user.id}</strong></div>
-                </div>
-
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{ fontWeight: '700', color: '#fff' }}>Abderrahmane Raquibi</div>
-                  <div style={{ fontSize: '0.75rem' }}>Fondateur MTB & Développeur Fullstack</div>
-                </div>
-              </div>
-            </div>
-          </section>
-        ) : (
-          <section className={styles.certLocked}>
-            <div className={styles.lockedIcon}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-              </svg>
-            </div>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: '#fff', margin: 0 }}>
-              Attestation de Participation Verrouillée
-            </h3>
-            <p style={{ maxWidth: '540px', fontSize: '0.85rem', margin: 0 }}>
-              Votre attestation officielle de participation sera automatiquement déverrouillée et disponible en téléchargement haute définition dès que votre pass QR aura été validé par les organisateurs à l'entrée de la salle.
-            </p>
-          </section>
-        )}
       </main>
     </div>
   );

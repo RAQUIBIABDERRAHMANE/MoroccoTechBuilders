@@ -23,18 +23,18 @@ export default function ScanPage() {
   const [pinError, setPinError] = useState(false);
 
   // Scanner States
-  const [scanMode, setScanMode] = useState<'camera' | 'manual'>('camera');
   const [isCameraRunning, setIsCameraRunning] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
   const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
   const [isScanningPaused, setIsScanningPaused] = useState(false);
 
-  const [inputVal, setInputVal] = useState('');
+  // Flash overlay for scan result
+  const [flashType, setFlashType] = useState<'approve' | 'already_attended' | 'decline' | null>(null);
+
   const [loading, setLoading] = useState(false);
   const [latestResult, setLatestResult] = useState<ScanResult | null>(null);
   const [history, setHistory] = useState<ScanResult[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
   const html5QrCodeRef = useRef<any>(null);
   const cooldownRef = useRef<boolean>(false);
   const isScanningPausedRef = useRef<boolean>(false);
@@ -44,13 +44,6 @@ export default function ScanPage() {
     const auth = sessionStorage.getItem('scan_pin_authenticated');
     setIsAuthenticated(auth === 'true');
   }, []);
-
-  // Focus scanner input automatically once authenticated in manual mode
-  useEffect(() => {
-    if (isAuthenticated && scanMode === 'manual') {
-      inputRef.current?.focus();
-    }
-  }, [isAuthenticated, scanMode]);
 
   // Camera lifecycle handlers
   const startCamera = async (facing: 'environment' | 'user' = facingMode) => {
@@ -154,9 +147,9 @@ export default function ScanPage() {
     }
   };
 
-  // Start or stop camera depending on authentication and active mode
+  // Start or stop camera depending on authentication state
   useEffect(() => {
-    if (isAuthenticated && scanMode === 'camera') {
+    if (isAuthenticated) {
       startCamera(facingMode);
     } else {
       stopCamera();
@@ -165,47 +158,48 @@ export default function ScanPage() {
     return () => {
       stopCamera();
     };
-  }, [isAuthenticated, scanMode]);
+  }, [isAuthenticated, facingMode]);
 
   // Sound feedback using Web Audio API
   const playBeep = (type: 'approve' | 'already_attended' | 'decline') => {
     try {
       const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+
+      const playNote = (freq: number, startTime: number, duration: number, vol: number) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.frequency.setValueAtTime(freq, startTime);
+        gain.gain.setValueAtTime(vol, startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+        osc.start(startTime);
+        osc.stop(startTime + duration);
+      };
 
       if (type === 'approve') {
-        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
-        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08); // A5
-        gain.gain.setValueAtTime(0.15, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.25);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.25);
+        // Ascending triumphant arpeggio: C5 → E5 → G5
+        playNote(523.25, ctx.currentTime, 0.18, 0.2);
+        playNote(659.25, ctx.currentTime + 0.12, 0.18, 0.2);
+        playNote(783.99, ctx.currentTime + 0.24, 0.3, 0.25);
       } else if (type === 'already_attended') {
-        osc.frequency.setValueAtTime(440, ctx.currentTime); // A4
-        osc.frequency.setValueAtTime(349.23, ctx.currentTime + 0.1); // F4
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.35);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.35);
+        // Warning double-tone: A4 → G4
+        playNote(440, ctx.currentTime, 0.2, 0.2);
+        playNote(392, ctx.currentTime + 0.18, 0.2, 0.2);
       } else {
-        osc.frequency.setValueAtTime(220, ctx.currentTime); // A3
-        osc.frequency.setValueAtTime(146.83, ctx.currentTime + 0.1); // D3
-        gain.gain.setValueAtTime(0.2, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
-        osc.start(ctx.currentTime);
-        osc.stop(ctx.currentTime + 0.3);
+        // Descending error: A3 → E3 → C3
+        playNote(220, ctx.currentTime, 0.18, 0.25);
+        playNote(164.81, ctx.currentTime + 0.14, 0.18, 0.25);
+        playNote(130.81, ctx.currentTime + 0.28, 0.28, 0.25);
       }
 
       if (navigator.vibrate) {
         navigator.vibrate(
           type === 'approve'
-            ? [100, 50, 100]
+            ? [80, 40, 80]
             : type === 'already_attended'
-              ? [150, 80, 150]
-              : [300]
+              ? [200, 80, 200]
+              : [400]
         );
       }
     } catch (e) {
@@ -276,8 +270,8 @@ export default function ScanPage() {
   }, [isAuthenticated, pinInput]);
 
   // Scan Submission
-  const handleScanSubmit = async (dataToSubmit?: string) => {
-    const raw = (dataToSubmit || inputVal).trim();
+  const handleScanSubmit = async (dataToSubmit: string) => {
+    const raw = (dataToSubmit || '').trim();
     if (!raw) return;
 
     setLoading(true);
@@ -308,7 +302,9 @@ export default function ScanPage() {
       setLatestResult(resultItem);
       setHistory((prev) => [resultItem, ...prev]);
       playBeep(status);
-      setInputVal('');
+      // Trigger fullscreen flash
+      setFlashType(status);
+      setTimeout(() => setFlashType(null), 1400);
     } catch (err) {
       const fallbackItem: ScanResult = {
         status: 'decline',
@@ -319,9 +315,10 @@ export default function ScanPage() {
       };
       setLatestResult(fallbackItem);
       playBeep('decline');
+      setFlashType('decline');
+      setTimeout(() => setFlashType(null), 1400);
     } finally {
       setLoading(false);
-      inputRef.current?.focus();
     }
   };
 
@@ -499,35 +496,8 @@ export default function ScanPage() {
 
         {/* Scanner Card */}
         <div className={styles.scannerCard}>
-          {/* Mode Selector Tabs */}
-          <div className={styles.modeTabs}>
-            <button
-              type="button"
-              className={`${styles.modeTab} ${scanMode === 'camera' ? styles.modeTabActive : ''}`}
-              onClick={() => setScanMode('camera')}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                <circle cx="12" cy="13" r="4" />
-              </svg>
-              Caméra en Direct
-            </button>
-            <button
-              type="button"
-              className={`${styles.modeTab} ${scanMode === 'manual' ? styles.modeTabActive : ''}`}
-              onClick={() => setScanMode('manual')}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <rect x="2" y="4" width="20" height="16" rx="2" />
-                <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8" />
-              </svg>
-              Saisie Manuelle / Douchette
-            </button>
-          </div>
-
-          {/* Camera Scanner Mode */}
-          {scanMode === 'camera' && (
-            <div>
+          {/* Camera Scanner */}
+          <div>
               <div className={styles.cameraWrapper}>
                 {/* Viewport for Html5Qrcode */}
                 <div id="qr-reader-viewport" className={styles.cameraView} />
@@ -636,107 +606,26 @@ export default function ScanPage() {
                 </div>
               )}
 
-              {/* Notice for mobile / LAN HTTP access */}
-              <div className={styles.cameraNotice} style={{ marginTop: '14px' }}>
-                <span style={{ fontWeight: '700' }}>💡 Conseil d'utilisation mobile :</span>
-                <span>
-                  Pour scanner avec la caméra d'un smartphone sur le réseau Wi-Fi local (<code>http://192.168.11.114:3000/scan</code>), autorisez l'accès caméra dans votre navigateur. Si votre navigateur bloque la caméra en HTTP non sécurisé, vous pouvez utiliser l'onglet <strong>Saisie Manuelle / Douchette</strong> ou ouvrir la page en <code>localhost</code>.
-                </span>
-              </div>
             </div>
-          )}
-
-          {/* Manual / Barcode Scanner Gun Mode */}
-          {scanMode === 'manual' && (
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleScanSubmit();
-              }}
-              className={styles.scanForm}
-            >
-              <div className={styles.inputGroup}>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  className={styles.scanInput}
-                  placeholder="Scanner le QR code ou entrer : Nom-Classe..."
-                  value={inputVal}
-                  onChange={(e) => setInputVal(e.target.value)}
-                  disabled={loading}
-                  autoComplete="off"
-                />
-                <button
-                  type="submit"
-                  className={styles.scanBtn}
-                  disabled={loading || !inputVal.trim()}
-                >
-                  {loading ? (
-                    'Vérification...'
-                  ) : (
-                    <>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polyline points="20 6 9 17 4 12" />
-                      </svg>
-                      Valider le Pass
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Quick Test Chips */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-dark-b)', fontWeight: '600' }}>
-                  Exemples de test :
-                </span>
-                {[
-                  'Abderrahmane Raquibi-DD201',
-                  'Yassine El Amrani-DD101',
-                  'Inconnu-DD999',
-                ].map((testData) => (
-                  <button
-                    key={testData}
-                    type="button"
-                    onClick={() => {
-                      setInputVal(testData);
-                      handleScanSubmit(testData);
-                    }}
-                    style={{
-                      background: 'rgba(255, 255, 255, 0.06)',
-                      border: '1px solid rgba(255, 255, 255, 0.12)',
-                      borderRadius: '16px',
-                      padding: '3px 10px',
-                      color: '#e6edf3',
-                      fontSize: '0.75rem',
-                      cursor: 'pointer',
-                      fontFamily: 'var(--font-mono)',
-                    }}
-                  >
-                    {testData}
-                  </button>
-                ))}
-              </div>
-            </form>
-          )}
 
           {/* Result Alert Box */}
           {latestResult && (
             <div
               className={`${styles.resultBox} ${latestResult.status === 'approve'
-                  ? styles.resultApprove
-                  : latestResult.status === 'already_attended'
-                    ? styles.resultAlreadyAttended
-                    : styles.resultDecline
+                ? styles.resultApprove
+                : latestResult.status === 'already_attended'
+                  ? styles.resultAlreadyAttended
+                  : styles.resultDecline
                 }`}
               role="alert"
             >
               <div className={styles.resultHeader}>
                 <div
                   className={`${styles.resultIcon} ${latestResult.status === 'approve'
-                      ? styles.iconApprove
-                      : latestResult.status === 'already_attended'
-                        ? styles.iconAlreadyAttended
-                        : styles.iconDecline
+                    ? styles.iconApprove
+                    : latestResult.status === 'already_attended'
+                      ? styles.iconAlreadyAttended
+                      : styles.iconDecline
                     }`}
                 >
                   {latestResult.status === 'approve' ? (
@@ -760,10 +649,10 @@ export default function ScanPage() {
                 <div>
                   <h2
                     className={`${styles.resultTitle} ${latestResult.status === 'approve'
-                        ? styles.titleApprove
-                        : latestResult.status === 'already_attended'
-                          ? styles.titleAlreadyAttended
-                          : styles.titleDecline
+                      ? styles.titleApprove
+                      : latestResult.status === 'already_attended'
+                        ? styles.titleAlreadyAttended
+                        : styles.titleDecline
                       }`}
                   >
                     {latestResult.status === 'approve'
@@ -844,10 +733,10 @@ export default function ScanPage() {
                   <div className={styles.historyLeft}>
                     <span
                       className={`${styles.historyBadge} ${item.status === 'approve'
-                          ? styles.badgeApprove
-                          : item.status === 'already_attended'
-                            ? styles.badgeAlreadyAttended
-                            : styles.badgeDecline
+                        ? styles.badgeApprove
+                        : item.status === 'already_attended'
+                          ? styles.badgeAlreadyAttended
+                          : styles.badgeDecline
                         }`}
                     >
                       {item.status === 'approve' ? 'Approuvé' : item.status === 'already_attended' ? 'Déjà Entré' : 'Refusé'}
@@ -864,6 +753,38 @@ export default function ScanPage() {
           )}
         </div>
       </div>
+
+      {/* Fullscreen Flash Overlay */}
+      {flashType && (
+        <div
+          className={`${styles.flashOverlay} ${
+            flashType === 'approve'
+              ? styles.flashApprove
+              : flashType === 'already_attended'
+                ? styles.flashWarning
+                : styles.flashDecline
+          }`}
+        >
+          <div className={styles.flashContent}>
+            {flashType === 'approve' ? (
+              <>
+                <div className={styles.flashIcon}>✓</div>
+                <div className={styles.flashLabel}>ACCÈS AUTORISÉ</div>
+              </>
+            ) : flashType === 'already_attended' ? (
+              <>
+                <div className={styles.flashIcon}>⚠</div>
+                <div className={styles.flashLabel}>DÉJÀ ENTRÉ</div>
+              </>
+            ) : (
+              <>
+                <div className={styles.flashIcon}>✕</div>
+                <div className={styles.flashLabel}>ACCÈS REFUSÉ</div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 }

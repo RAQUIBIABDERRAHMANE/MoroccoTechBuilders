@@ -98,8 +98,9 @@ export async function POST(request: Request) {
       status: scanStatus,
       message,
       participant: {
-        fullName: fullName || cleanData,
-        classe: classe || 'N/A',
+        fullName: tursoAttendee?.fullName || fullName || cleanData,
+        classe: tursoAttendee?.classe || classe || 'N/A',
+        ticketId: tursoAttendee ? cleanData : undefined,
         scannedAt: new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
       },
       raw: rawResponse,
