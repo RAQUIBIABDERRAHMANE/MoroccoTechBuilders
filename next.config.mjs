@@ -17,7 +17,7 @@ const nextConfig = {
       },
     ],
   },
-  allowedDevOrigins: ['192.168.11.114', '169.254.83.107','port.raquibi.com'],
+  allowedDevOrigins: ['192.168.11.114', '169.254.83.107','port.raquibi.com','mtb.raquibi.com'],
 };
 
 export default nextConfig;

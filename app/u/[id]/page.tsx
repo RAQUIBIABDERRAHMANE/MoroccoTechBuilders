@@ -3,7 +3,7 @@ import MTBLogo from '@/components/MTBLogo';
 import Image from 'next/image';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getUserProfileWithEvents } from '@/lib/user-service';
+import { getPublicProfile } from '@/lib/user-service';
 import styles from './public-profile.module.css';
 
 interface PageProps {
@@ -12,7 +12,7 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps) {
   const { id } = await params;
-  const profile = await getUserProfileWithEvents(id);
+  const profile = await getPublicProfile(id);
 
   if (!profile) {
     return {
@@ -28,11 +28,12 @@ export async function generateMetadata({ params }: PageProps) {
 
 export default async function PublicProfilePage({ params }: PageProps) {
   const { id } = await params;
-  const profile = await getUserProfileWithEvents(id);
+  const profile = await getPublicProfile(id);
 
   if (!profile) {
     notFound();
   }
+
 
   const skillsList = Array.isArray(profile.skills) ? profile.skills : [];
 
@@ -68,7 +69,17 @@ export default async function PublicProfilePage({ params }: PageProps) {
         {/* Profile Header */}
         <header className={styles.profileHeader}>
           <div className={styles.avatar}>
-            {getInitials(profile.fullName)}
+            {profile.avatarUrl ? (
+              <Image
+                src={profile.avatarUrl}
+                alt={profile.fullName}
+                width={80}
+                height={80}
+                style={{ borderRadius: '50%', objectFit: 'cover' }}
+              />
+            ) : (
+              getInitials(profile.fullName)
+            )}
           </div>
           <div className={styles.headerText}>
             <h1 className={styles.name}>{profile.fullName}</h1>

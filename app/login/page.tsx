@@ -81,7 +81,15 @@ export default function LoginPage() {
           </div>
 
           <div className={styles.field}>
-            <label htmlFor="password">Mot de passe</label>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <label htmlFor="password">Mot de passe</label>
+              <Link
+                href="/reset-password"
+                style={{ fontSize: '0.78rem', color: 'var(--mtb-blue)', textDecoration: 'none' }}
+              >
+                Mot de passe oublié ?
+              </Link>
+            </div>
             <div className={styles.passwordWrap}>
               <input
                 id="password"

@@ -1,0 +1,248 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 15, 36, 0.82);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal {
+  background: #0b162c;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(16, 185, 129, 0.15);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px) scale(0.97);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1e293b;
+  border: 2px solid #10b981;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #10b981;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin: 2px 0 0;
+}
+
+.closeBtn {
+  background: rgba(255, 255, 255, 0.08);
+  border: none;
+  color: #94a3b8;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.closeBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.qrSection {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: radial-gradient(circle at 50% 30%, rgba(16, 185, 129, 0.08), transparent 70%);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.qrFrame {
+  width: 220px;
+  height: 220px;
+  background: #ffffff;
+  padding: 12px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.qrSkeleton {
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.qrInstruction {
+  font-size: 0.85rem;
+  color: #cbd5e1;
+  margin: 14px 0 0;
+  line-height: 1.45;
+  max-width: 340px;
+}
+
+.qrInstruction strong {
+  color: #10b981;
+}
+
+.actions {
+  padding: 16px 20px 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.directActionBox {
+  padding: 16px 20px 0;
+}
+
+.btnOpenContactApp {
+  width: 100%;
+  padding: 14px 18px;
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 0.98rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.4);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btnOpenContactApp:hover {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 24px rgba(16, 185, 129, 0.5);
+}
+
+.btnShare {
+  width: 100%;
+  padding: 11px 16px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  color: #60a5fa;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.btnShare:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: #3b82f6;
+}
+
+.btnVcfDownload {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 0.78rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 4px;
+  text-align: center;
+  transition: color 0.15s ease;
+}
+
+.btnVcfDownload:hover {
+  color: #e2e8f0;
+}

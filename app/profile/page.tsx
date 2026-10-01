@@ -61,12 +61,70 @@ export default function ProfilePage() {
   const [github, setGithub] = useState('');
   const [linkedin, setLinkedin] = useState('');
   const [portfolio, setPortfolio] = useState('');
+  const [githubError, setGithubError] = useState('');
+  const [linkedinError, setLinkedinError] = useState('');
+  const [portfolioError, setPortfolioError] = useState('');
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
   const [customSkillInput, setCustomSkillInput] = useState('');
+  const [isDirectoryVisible, setIsDirectoryVisible] = useState(true);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Field-level inline validation handlers
+  const handleGithubChange = (val: string) => {
+    let clean = val.trim();
+    if (clean.startsWith('https://github.com/')) {
+      clean = clean.replace('https://github.com/', '');
+    } else if (clean.startsWith('http://github.com/')) {
+      clean = clean.replace('http://github.com/', '');
+    } else if (clean.startsWith('github.com/')) {
+      clean = clean.replace('github.com/', '');
+    } else if (clean.startsWith('@')) {
+      clean = clean.replace('@', '');
+    }
+    setGithub(clean);
+    if (clean && /\s/.test(clean)) {
+      setGithubError("Le nom d'utilisateur GitHub ne doit pas contenir d'espaces.");
+    } else {
+      setGithubError('');
+    }
+  };
+
+  const handleLinkedinChange = (val: string) => {
+    const clean = val.trim();
+    setLinkedin(clean);
+    if (clean) {
+      if (!clean.includes('linkedin.com/in/')) {
+        setLinkedinError('Le lien doit être de la forme https://linkedin.com/in/identifiant');
+      } else {
+        setLinkedinError('');
+      }
+    } else {
+      setLinkedinError('');
+    }
+  };
+
+  const handlePortfolioChange = (val: string) => {
+    const clean = val.trim();
+    setPortfolio(clean);
+    if (clean) {
+      if (!clean.startsWith('http://') && !clean.startsWith('https://')) {
+        setPortfolioError("L'URL doit commencer par https:// ou http://");
+      } else {
+        try {
+          new URL(clean);
+          setPortfolioError('');
+        } catch {
+          setPortfolioError("Format d'URL invalide.");
+        }
+      }
+    } else {
+      setPortfolioError('');
+    }
+  };
+
 
   useEffect(() => {
     fetch('/api/auth/me')
@@ -90,6 +148,7 @@ export default function ProfilePage() {
         setGithub(data.user.githubUsername || data.user.github || '');
         setLinkedin(data.user.linkedinUrl || data.user.linkedin || '');
         setPortfolio(data.user.portfolioUrl || data.user.portfolio || '');
+        setIsDirectoryVisible(data.user.isDirectoryVisible !== false);
 
         if (data.user.skills) {
           if (Array.isArray(data.user.skills)) {
@@ -182,6 +241,7 @@ export default function ProfilePage() {
           linkedin,
           portfolio,
           skills: selectedSkills.join(', '),
+          isDirectoryVisible,
         }),
       });
 
@@ -670,8 +730,14 @@ export default function ProfilePage() {
                   type="text"
                   placeholder="Ex: octocat ou https://github.com/..."
                   value={github}
-                  onChange={(e) => setGithub(e.target.value)}
+                  onChange={(e) => handleGithubChange(e.target.value)}
+                  style={githubError ? { borderColor: '#ff7b72' } : {}}
                 />
+                {githubError && (
+                  <span style={{ fontSize: '0.78rem', color: '#ff7b72', marginTop: '4px' }}>
+                    {githubError}
+                  </span>
+                )}
               </div>
 
               <div className={styles.inputField}>
@@ -686,8 +752,14 @@ export default function ProfilePage() {
                   type="url"
                   placeholder="https://linkedin.com/in/..."
                   value={linkedin}
-                  onChange={(e) => setLinkedin(e.target.value)}
+                  onChange={(e) => handleLinkedinChange(e.target.value)}
+                  style={linkedinError ? { borderColor: '#ff7b72' } : {}}
                 />
+                {linkedinError && (
+                  <span style={{ fontSize: '0.78rem', color: '#ff7b72', marginTop: '4px' }}>
+                    {linkedinError}
+                  </span>
+                )}
               </div>
 
               <div className={styles.inputField}>
@@ -704,8 +776,14 @@ export default function ProfilePage() {
                   type="url"
                   placeholder="https://mon-portfolio.dev"
                   value={portfolio}
-                  onChange={(e) => setPortfolio(e.target.value)}
+                  onChange={(e) => handlePortfolioChange(e.target.value)}
+                  style={portfolioError ? { borderColor: '#ff7b72' } : {}}
                 />
+                {portfolioError && (
+                  <span style={{ fontSize: '0.78rem', color: '#ff7b72', marginTop: '4px' }}>
+                    {portfolioError}
+                  </span>
+                )}
               </div>
 
               <div className={styles.inputField}>
@@ -736,13 +814,38 @@ export default function ProfilePage() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className={`btn-green ${styles.saveBtn}`}
-                disabled={saving}
-              >
-                {saving ? 'Enregistrement en cours...' : 'Enregistrer mon Profil'}
-              </button>
+                <div style={{
+                  margin: '18px 0',
+                  padding: '14px 16px',
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                  borderRadius: 'var(--radius-md)',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: '12px',
+                }}>
+                  <input
+                    id="directory-toggle"
+                    type="checkbox"
+                    checked={isDirectoryVisible}
+                    onChange={(e) => setIsDirectoryVisible(e.target.checked)}
+                    style={{ width: '18px', height: '18px', marginTop: '2px', accentColor: '#10b981', cursor: 'pointer' }}
+                  />
+                  <label htmlFor="directory-toggle" style={{ fontSize: '0.88rem', color: 'rgba(255, 255, 255, 0.9)', cursor: 'pointer', lineHeight: 1.4 }}>
+                    <strong style={{ display: 'block' }}>Afficher mon profil dans l'Annuaire des Participants</strong>
+                    <span style={{ display: 'block', fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.55)', marginTop: '2px' }}>
+                      Permet aux autres stagiaires et recruteurs de trouver vos compétences sur <Link href="/attendees" style={{ color: '#34d399', textDecoration: 'underline' }}>l'annuaire MTB</Link>.
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  className={`btn-green ${styles.saveBtn}`}
+                  disabled={saving}
+                >
+                  {saving ? 'Enregistrement en cours...' : 'Enregistrer mon Profil'}
+                </button>
             </form>
           </section>
         </div>

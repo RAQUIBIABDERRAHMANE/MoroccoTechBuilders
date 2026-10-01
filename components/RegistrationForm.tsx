@@ -74,6 +74,13 @@ export default function RegistrationForm() {
 
       setGeneratedPass(data.pass);
       setShowModal(true);
+
+      // Redirect to dedicated confirmation page for the attendee
+      setTimeout(() => {
+        window.location.href = `/confirmed?ticketId=${encodeURIComponent(
+          data.pass?.ticketId || ''
+        )}&userId=${encodeURIComponent(data.userId || '')}`;
+      }, 1000);
     } catch (err: any) {
       setErrorMsg(err.message || 'Une erreur est survenue.');
     } finally {
@@ -126,6 +133,7 @@ export default function RegistrationForm() {
                   name="fullName"
                   type="text"
                   required
+                  disabled={loading}
                   placeholder="Ex: Yassine El Amrani"
                   value={formData.fullName}
                   onChange={handleChange}
@@ -140,6 +148,7 @@ export default function RegistrationForm() {
                   name="email"
                   type="email"
                   required
+                  disabled={loading}
                   placeholder="Ex: yassine@ofppt-edu.ma"
                   value={formData.email}
                   onChange={handleChange}
@@ -156,6 +165,7 @@ export default function RegistrationForm() {
                   name="classe"
                   type="text"
                   required
+                  disabled={loading}
                   placeholder="Ex: DD201, DEV202"
                   value={formData.classe}
                   onChange={handleChange}
@@ -167,6 +177,7 @@ export default function RegistrationForm() {
                 <select
                   id="year"
                   name="year"
+                  disabled={loading}
                   value={formData.year}
                   onChange={handleChange}
                 >
@@ -184,6 +195,7 @@ export default function RegistrationForm() {
                   name="phone"
                   type="tel"
                   required
+                  disabled={loading}
                   placeholder="Ex: 06 12 34 56 78"
                   value={formData.phone}
                   onChange={handleChange}
@@ -201,6 +213,7 @@ export default function RegistrationForm() {
                     name="password"
                     type={showPassword ? 'text' : 'password'}
                     required
+                    disabled={loading}
                     minLength={6}
                     placeholder="Min. 6 caractères"
                     value={formData.password}

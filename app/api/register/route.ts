@@ -1,12 +1,34 @@
 import { NextResponse } from 'next/server';
-import { createUser, findUserByEmail, createEventRegistration, getUserRegistrations } from '@/lib/user-service';
+import crypto from 'crypto';
+import QRCode from 'qrcode';
+import {
+  createUser,
+  findUserByEmail,
+  createEventRegistration,
+  getActiveEvent,
+  getEventById,
+} from '@/lib/user-service';
 import { setSessionCookie, verifyPassword } from '@/lib/auth';
-
-const EVENT_ID = 'mtb-2026-online-presence';
-const EVENT_NAME = 'Morocco Tech Builders — Construire sa Présence en Ligne';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
   try {
+    // 1. Rate Limiting Check: 10 registrations per 10 minutes per IP
+    const ip = getClientIp(request);
+    const rl = rateLimit(`register:${ip}`, 10, 10 * 60 * 1000);
+    if (!rl.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Trop de requêtes d'inscription. Veuillez réessayer dans ${rl.reset} secondes.`,
+        },
+        {
+          status: 429,
+          headers: { 'Retry-After': String(rl.reset) },
+        }
+      );
+    }
+
     const body = await request.json();
     const { fullName, email, password, phone, classe, year } = body;
 
@@ -25,20 +47,36 @@ export async function POST(request: Request) {
     const cleanYear = String(year || (cleanClasse.includes('1') ? '1ère Année' : '2ème Année'));
     const userPassword = String(password || 'MTB2026!');
 
-    // QR Code data matches the format used in n8n workflow & scanner: FullName-Classe
-    const qrCodeData = `${cleanFullName}-${cleanClasse}`;
+    // 2. Generate secure, non-colliding ticketId (UUID prefix)
+    const ticketId = `OFPPT-${crypto.randomUUID().slice(0, 8).toUpperCase()}`;
+
+    // Secure QR code payload: uses unique ticketId rather than guessable name-class
+    const qrCodeData = ticketId;
     const qrDataEncoded = encodeURIComponent(qrCodeData);
     const qrCodeUrl = `/api/qr?data=${qrDataEncoded}`;
 
-    // Unique ticket identifier
-    const ticketId = `OFPPT-DD-${Date.now().toString().slice(-6)}`;
+    // 3. Pre-generate base64 QR Code image so passes render offline/instantly
+    let qrBase64 = '';
+    try {
+      qrBase64 = await QRCode.toDataURL(qrCodeData, {
+        width: 320,
+        margin: 2,
+        errorCorrectionLevel: 'M',
+        color: {
+          dark: '#082D5B',
+          light: '#FFFFFF',
+        },
+      });
+    } catch (qrErr) {
+      console.warn('Base64 QR generation warning:', qrErr);
+    }
 
-    // 1. Check or Create User in Turso Database
+    // 4. Check or Create User in Turso Database
     let existingUser = await findUserByEmail(cleanEmail);
     let userId = existingUser?.id;
 
     if (existingUser) {
-      // If user provided a password and already has an account, verify or update
+      // If user provided a password and already has an account, verify
       if (password && existingUser.passwordHash) {
         const isPasswordValid = verifyPassword(userPassword, existingUser.passwordHash);
         if (!isPasswordValid) {
@@ -69,17 +107,22 @@ export async function POST(request: Request) {
       throw new Error('Erreur lors de la création du compte stagiaire dans Turso.');
     }
 
-    // 2. Create or Retrieve Event Registration in Turso
+    // 5. Create or Retrieve Event Registration in Turso (Deduplicated)
+    const requestedEventId = body.eventId;
+    const targetEvent = requestedEventId ? await getEventById(requestedEventId) : await getActiveEvent();
+    const eventId = targetEvent?.id || 'mtb-2026-online-presence';
+    const eventName = targetEvent?.name || 'Morocco Tech Builders — Construire sa Présence en Ligne';
+
     const registration = await createEventRegistration({
       userId,
-      eventId: EVENT_ID,
-      eventName: EVENT_NAME,
+      eventId,
+      eventName,
       ticketId,
       qrCodeData,
       qrCodeUrl,
     });
 
-    // 3. Set Session Cookie (User is immediately authenticated)
+    // 6. Set Session Cookie (User is immediately authenticated)
     await setSessionCookie({
       userId,
       email: cleanEmail,
@@ -87,7 +130,7 @@ export async function POST(request: Request) {
       classe: cleanClasse,
     });
 
-    // 4. Forward to external n8n Webhook for email delivery & remote sync
+    // 7. Forward to external n8n Webhook for email delivery & remote sync (non-blocking)
     const webhookUrl = process.env.EVENT_WEBHOOK_URL || process.env.N8N_WEBHOOK_URL;
     let synced = false;
 
@@ -96,7 +139,7 @@ export async function POST(request: Request) {
         const res = await fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          signal: AbortSignal.timeout(15000),
+          signal: AbortSignal.timeout(12000),
           body: JSON.stringify({
             fullName: cleanFullName,
             FullName: cleanFullName,
@@ -109,6 +152,9 @@ export async function POST(request: Request) {
             year: cleanYear,
             Year: cleanYear,
             ticketId: registration.ticketId,
+            qrCodeData: registration.qrCodeData,
+            eventId,
+            eventName,
           }),
         });
 
@@ -130,18 +176,19 @@ export async function POST(request: Request) {
       classe: cleanClasse,
       year: cleanYear,
       qrCodeUrl: registration.qrCodeUrl,
-      eventName: EVENT_NAME,
-      speaker: 'Abderrahmane Raquibi',
-      location: 'Salle de Conférence, OFPPT Marrakech',
+      qrBase64: qrBase64 || registration.qrCodeUrl,
+      eventName,
+      speaker: targetEvent?.speaker || 'Abderrahmane Raquibi',
+      location: targetEvent?.location || 'Amphithéâtre OFPPT Marrakech',
       duration: '1h 45 - 2h 15',
-      date: 'Session 2026',
+      date: targetEvent?.date || 'Session 2026',
       status: registration.status,
     };
 
     return NextResponse.json({
       success: true,
       message: existingUser
-        ? 'Ravi de vous revoir ! Votre pass numérique a été mis à jour.'
+        ? 'Ravi de vous revoir ! Votre pass numérique est prêt.'
         : 'Compte créé & inscription confirmée ! Votre pass numérique a été généré.',
       synced,
       userId,

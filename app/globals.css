@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
-
 /* ─── Design Tokens: Morocco Tech Builders (MTB) Brand Guidelines ─── */
 :root {
   /* Primary Palette */
@@ -65,8 +63,8 @@
   --radius-pill:      9999px;
 
   /* Typography: Headings Plus Jakarta Sans, Body Inter */
-  --font-heading:     'Plus Jakarta Sans', var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-sans:        'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-heading:     var(--font-jakarta), 'Plus Jakarta Sans', var(--font-inter), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-sans:        var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono:        'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 
   /* Layout */
@@ -408,3 +406,56 @@ img { display: block; max-width: 100%; }
     font-size: 0.9rem;
   }
 }
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-pass,
+  #printable-pass * {
+    visibility: visible;
+  }
+  #printable-pass {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
+
+/* ─── Global HTML5-QRCode Full Viewport Overrides ─── */
+#qr-peer-viewport,
+#qr-reader-viewport {
+  width: 100% !important;
+  height: 100% !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+#qr-peer-viewport video,
+#qr-reader-viewport video,
+#qr-peer-viewport__scan_region video,
+#qr-reader-viewport__scan_region video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+}
+
+#qr-peer-viewport__scan_region,
+#qr-reader-viewport__scan_region {
+  width: 100% !important;
+  height: 100% !important;
+  position: absolute !important;
+  inset: 0 !important;
+}
+
+#qr-peer-viewport canvas,
+#qr-reader-viewport canvas {
+  display: none !important;
+}
+

@@ -1,0 +1,212 @@
+{
+  "app/api/auth/login/route.ts": {
+    "mtime": 1790091997.0482986,
+    "ast_hash": "607c7531b972414a005d42faf76af64d",
+    "semantic_hash": "607c7531b972414a005d42faf76af64d"
+  },
+  "app/api/auth/logout/route.ts": {
+    "mtime": 1790092006.5298212,
+    "ast_hash": "d413dd3a2ffdeed6b8e50992b341c6bb",
+    "semantic_hash": "d413dd3a2ffdeed6b8e50992b341c6bb"
+  },
+  "app/api/auth/me/route.ts": {
+    "mtime": 1790092397.331358,
+    "ast_hash": "db72048364271618b26315d72cba5db4",
+    "semantic_hash": "db72048364271618b26315d72cba5db4"
+  },
+  "app/api/calendar/route.ts": {
+    "mtime": 1790506449.6758282,
+    "ast_hash": "89a99fa1b828fac1e0ab2204a544b461",
+    "semantic_hash": "89a99fa1b828fac1e0ab2204a544b461"
+  },
+  "app/api/profile/update/route.ts": {
+    "mtime": 1790092486.313769,
+    "ast_hash": "a16052de6dd3614a356212a15bfdf30f",
+    "semantic_hash": "a16052de6dd3614a356212a15bfdf30f"
+  },
+  "app/api/qr/route.ts": {
+    "mtime": 1790093516.5105906,
+    "ast_hash": "d7f733dbd81bcd8c2c16ce25a8a45095",
+    "semantic_hash": "d7f733dbd81bcd8c2c16ce25a8a45095"
+  },
+  "app/api/register/route.ts": {
+    "mtime": 1790093554.854139,
+    "ast_hash": "f5f2c060642572167ccb94bc11b5e94a",
+    "semantic_hash": "f5f2c060642572167ccb94bc11b5e94a"
+  },
+  "app/api/scan/route.ts": {
+    "mtime": 1790514824.8775923,
+    "ast_hash": "ce7bd209893e1f2d7c5f06ad9d704a7c",
+    "semantic_hash": "ce7bd209893e1f2d7c5f06ad9d704a7c"
+  },
+  "app/api/wallet/apple/route.ts": {
+    "mtime": 1790506105.225672,
+    "ast_hash": "86e71a7d7a7c1a89e077902356d2d8af",
+    "semantic_hash": "86e71a7d7a7c1a89e077902356d2d8af"
+  },
+  "app/api/wallet/google/route.ts": {
+    "mtime": 1790513051.2539215,
+    "ast_hash": "6ae5f9c40dae4ef6c55761d669710d7f",
+    "semantic_hash": "6ae5f9c40dae4ef6c55761d669710d7f"
+  },
+  "app/layout.tsx": {
+    "mtime": 1790512526.0079627,
+    "ast_hash": "24cb75f449d82fdb6e605153d6372350",
+    "semantic_hash": "24cb75f449d82fdb6e605153d6372350"
+  },
+  "app/login/page.tsx": {
+    "mtime": 1790094936.5626814,
+    "ast_hash": "364d94df5cb3cec50a7eb736690c9f31",
+    "semantic_hash": "364d94df5cb3cec50a7eb736690c9f31"
+  },
+  "app/page.tsx": {
+    "mtime": 1790067345.4446259,
+    "ast_hash": "9137539722435b0e435dbe60850e5b92",
+    "semantic_hash": "9137539722435b0e435dbe60850e5b92"
+  },
+  "app/profile/page.tsx": {
+    "mtime": 1790521183.406933,
+    "ast_hash": "25cf2c3e50258da50662ead1cb0cb5b2",
+    "semantic_hash": "25cf2c3e50258da50662ead1cb0cb5b2"
+  },
+  "app/scan/page.tsx": {
+    "mtime": 1790520941.973425,
+    "ast_hash": "9633d4b2325951d1cfa10425c7109516",
+    "semantic_hash": "9633d4b2325951d1cfa10425c7109516"
+  },
+  "app/u/[id]/page.tsx": {
+    "mtime": 1790521570.036131,
+    "ast_hash": "f60bfea698593a976b159dae92e442b1",
+    "semantic_hash": "f60bfea698593a976b159dae92e442b1"
+  },
+  "components/AppleWalletModal.tsx": {
+    "mtime": 1790506615.228955,
+    "ast_hash": "38a573dedb52ed2482e3d5cdcc7043cb",
+    "semantic_hash": "38a573dedb52ed2482e3d5cdcc7043cb"
+  },
+  "components/Countdown.tsx": {
+    "mtime": 1790093266.74796,
+    "ast_hash": "eca106e08c5ad673b6eeb79013d48c7d",
+    "semantic_hash": "eca106e08c5ad673b6eeb79013d48c7d"
+  },
+  "components/DigitalPassModal.tsx": {
+    "mtime": 1790504210.8949783,
+    "ast_hash": "f77d3925e2ac25858ffe4dfc15ae1cf2",
+    "semantic_hash": "f77d3925e2ac25858ffe4dfc15ae1cf2"
+  },
+  "components/Faq.tsx": {
+    "mtime": 1790071322.5031798,
+    "ast_hash": "18e490420f76a3abacca5bf2a50bae4a",
+    "semantic_hash": "18e490420f76a3abacca5bf2a50bae4a"
+  },
+  "components/Footer.tsx": {
+    "mtime": 1790094818.5362377,
+    "ast_hash": "0a007e8f20f15e39b2c7791a9bac110f",
+    "semantic_hash": "0a007e8f20f15e39b2c7791a9bac110f"
+  },
+  "components/GoogleWalletModal.tsx": {
+    "mtime": 1790505945.334204,
+    "ast_hash": "467ad1cb5cf58059255936c52297d73a",
+    "semantic_hash": "467ad1cb5cf58059255936c52297d73a"
+  },
+  "components/Hero.tsx": {
+    "mtime": 1790106910.1440504,
+    "ast_hash": "f7f6ed41ba474356b26842df822b86c3",
+    "semantic_hash": "f7f6ed41ba474356b26842df822b86c3"
+  },
+  "components/MTBLogo.tsx": {
+    "mtime": 1790514547.135125,
+    "ast_hash": "83e294b3df2d31fb408291a16c105b2a",
+    "semantic_hash": "83e294b3df2d31fb408291a16c105b2a"
+  },
+  "components/Navbar.tsx": {
+    "mtime": 1790096241.391168,
+    "ast_hash": "5dc70e2c6a14feb2c6949397e82fd0a2",
+    "semantic_hash": "5dc70e2c6a14feb2c6949397e82fd0a2"
+  },
+  "components/Objectives.tsx": {
+    "mtime": 1790095562.4707546,
+    "ast_hash": "5498229187a7ed63abbed780877f22cb",
+    "semantic_hash": "5498229187a7ed63abbed780877f22cb"
+  },
+  "components/ProgramAgenda.tsx": {
+    "mtime": 1790095669.0810537,
+    "ast_hash": "a1a845dcf3714651626c38600df24d99",
+    "semantic_hash": "a1a845dcf3714651626c38600df24d99"
+  },
+  "components/RegistrationForm.tsx": {
+    "mtime": 1790101201.0135984,
+    "ast_hash": "1dc4a1e85d36b576628d272affa56354",
+    "semantic_hash": "1dc4a1e85d36b576628d272affa56354"
+  },
+  "components/Speaker.tsx": {
+    "mtime": 1790101997.2202966,
+    "ast_hash": "69dd84465c3160eb30401004c027e38b",
+    "semantic_hash": "69dd84465c3160eb30401004c027e38b"
+  },
+  "components/StatsStrip.tsx": {
+    "mtime": 1790095500.072089,
+    "ast_hash": "4afd6b54c53eed10c9cd561cc1f2654a",
+    "semantic_hash": "4afd6b54c53eed10c9cd561cc1f2654a"
+  },
+  "components/WalletPassButtons.tsx": {
+    "mtime": 1790512847.6944494,
+    "ast_hash": "43b5c6a41a19a7ed597ae037ad08c90d",
+    "semantic_hash": "43b5c6a41a19a7ed597ae037ad08c90d"
+  },
+  "lib/auth.ts": {
+    "mtime": 1790091895.7195344,
+    "ast_hash": "f86ffffbfe778d8038a160407bfb7572",
+    "semantic_hash": "f86ffffbfe778d8038a160407bfb7572"
+  },
+  "lib/turso.ts": {
+    "mtime": 1790091942.2462146,
+    "ast_hash": "ab3986d0f9507bf23c9e1f0f98b81e09",
+    "semantic_hash": "ab3986d0f9507bf23c9e1f0f98b81e09"
+  },
+  "lib/user-service.ts": {
+    "mtime": 1790514810.4068744,
+    "ast_hash": "8793d976bab663ed98d035db5999355a",
+    "semantic_hash": "8793d976bab663ed98d035db5999355a"
+  },
+  "next.config.mjs": {
+    "mtime": 1790090501.6529503,
+    "ast_hash": "485a1ceca5bf85dbe8d54fa15c25370f",
+    "semantic_hash": "485a1ceca5bf85dbe8d54fa15c25370f"
+  },
+  "package.json": {
+    "mtime": 1790504496.410036,
+    "ast_hash": "5e1d94841267863ee9bafedc530ba7cf",
+    "semantic_hash": "5e1d94841267863ee9bafedc530ba7cf"
+  },
+  "skills-lock.json": {
+    "mtime": 1790067775.2913797,
+    "ast_hash": "8880ad395e630ceed6d587e41c2a5e90",
+    "semantic_hash": "8880ad395e630ceed6d587e41c2a5e90"
+  },
+  "tsconfig.json": {
+    "mtime": 1790065080.2315493,
+    "ast_hash": "701d94282762685a48ca77258568187e",
+    "semantic_hash": "701d94282762685a48ca77258568187e"
+  },
+  "AGENTS.md": {
+    "mtime": 1790065102.8274653,
+    "ast_hash": "01e8142356e15c3404e0d84c48187cd0",
+    "semantic_hash": "01e8142356e15c3404e0d84c48187cd0"
+  },
+  "CLAUDE.md": {
+    "mtime": 1790065102.8279507,
+    "ast_hash": "5c27369b226fcf2be8a6cfe52224e767",
+    "semantic_hash": "5c27369b226fcf2be8a6cfe52224e767"
+  },
+  "README.md": {
+    "mtime": 1790519699.816073,
+    "ast_hash": "0eaa5b58e8860c2ca28f0833dc7f13e6",
+    "semantic_hash": "0eaa5b58e8860c2ca28f0833dc7f13e6"
+  },
+  "Demande d'autorisation - Pr\u00e9sentation OFPPT (1).pdf": {
+    "mtime": 1790024072.8343015,
+    "ast_hash": "0fd42fbfc3441e2561b04123df27515d",
+    "semantic_hash": "0fd42fbfc3441e2561b04123df27515d"
+  }
+}

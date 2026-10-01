@@ -6,10 +6,11 @@ import styles from './Navbar.module.css';
 import Link from 'next/link';
 
 const NAV_LINKS = [
-  { href: '#programme', label: 'Programme' },
-  { href: '#objectifs', label: 'Objectifs' },
-  { href: '#intervenant', label: 'Intervenant' },
-  { href: '#faq', label: 'FAQ' },
+  { href: '/#programme', label: 'Programme' },
+  { href: '/#objectifs', label: 'Objectifs' },
+  { href: '/#intervenant', label: 'Intervenant' },
+  { href: '/attendees', label: 'Annuaire' },
+  { href: '/#faq', label: 'FAQ' },
 ];
 
 export default function Navbar() {

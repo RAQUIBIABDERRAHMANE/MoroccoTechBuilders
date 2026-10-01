@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Plus_Jakarta_Sans, Inter } from 'next/font/google';
 import './globals.css';
 
 export const viewport: Viewport = {
@@ -9,13 +9,20 @@ export const viewport: Viewport = {
   themeColor: '#082D5B',
 };
 
-// Mona Sans is not in next/font/google, using Inter as high-quality substitute
-// with similar geometric grotesque characteristics
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-jakarta',
+  display: 'swap',
+});
+
 const inter = Inter({
   subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-inter',
   display: 'swap',
 });
+
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
@@ -46,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="fr" className={inter.variable} data-scroll-behavior="smooth" suppressHydrationWarning>
+    <html lang="fr" className={`${jakarta.variable} ${inter.variable}`} data-scroll-behavior="smooth" suppressHydrationWarning>
       <body suppressHydrationWarning>{children}</body>
     </html>
   );

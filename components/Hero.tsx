@@ -10,6 +10,19 @@ export default function Hero() {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [glarePos, setGlarePos] = useState({ x: 50, y: 50 });
   const [isHovered, setIsHovered] = useState(false);
+  const [capacityStats, setCapacityStats] = useState<{ spotsLeft: number; capacity: number } | null>(null);
+
+  React.useEffect(() => {
+    fetch('/api/stats')
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && typeof data.spotsLeft === 'number') {
+          setCapacityStats({ spotsLeft: data.spotsLeft, capacity: data.capacity || 120 });
+        }
+      })
+      .catch(() => {});
+  }, []);
+
 
   // Mouse tracking to tilt around the signature isometric angle & move light glare
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -71,6 +84,33 @@ export default function Hero() {
               Atelier Pratique Présentiel · Salle Polyvalente, Complexe OFPPT Marrakech
             </span>
             <span className={styles.eyebrowFree}>Pass 100% Gratuit</span>
+            {capacityStats && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: 'rgba(239, 68, 68, 0.15)',
+                  border: '1px solid rgba(239, 68, 68, 0.4)',
+                  color: '#fca5a5',
+                  padding: '2px 8px',
+                  borderRadius: '9999px',
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                }}
+              >
+                <span
+                  style={{
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    background: '#ef4444',
+                    display: 'inline-block',
+                  }}
+                />
+                Plus que {capacityStats.spotsLeft} places restantes
+              </span>
+            )}
           </div>
         </div>
       </div>
@@ -78,9 +118,29 @@ export default function Hero() {
       <div className={`container ${styles.grid}`}>
         {/* ── Left Column: Editorial & Live Customization ── */}
         <div className={styles.textCol}>
-          <div className={styles.categoryBadge}>
-            <span className={styles.badgeStar} aria-hidden="true">★</span>
-            Session Spéciale Stagiaires Développement Digital (OFPPT)
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center', marginBottom: '12px' }}>
+            <div className={styles.categoryBadge} style={{ marginBottom: 0 }}>
+              <span className={styles.badgeStar} aria-hidden="true">★</span>
+              Session Spéciale Stagiaires Développement Digital (OFPPT)
+            </div>
+            {capacityStats && (
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  background: 'rgba(16, 185, 129, 0.15)',
+                  border: '1px solid rgba(16, 185, 129, 0.35)',
+                  color: '#6ee7b7',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '0.78rem',
+                  fontWeight: 700,
+                }}
+              >
+                ⚡ {capacityStats.spotsLeft} places disponibles
+              </span>
+            )}
           </div>
 
           <h1 className={styles.title}>

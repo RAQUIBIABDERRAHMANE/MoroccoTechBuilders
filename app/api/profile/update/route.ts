@@ -38,6 +38,11 @@ export async function POST(request: Request) {
       cleanSkills = body.skills.split(',').map((s: string) => s.trim()).filter(Boolean);
     }
 
+    const isDirectoryVisible =
+      body.isDirectoryVisible !== undefined
+        ? Boolean(body.isDirectoryVisible)
+        : undefined;
+
     await updateUserProfile(session.userId, {
       githubUsername: cleanGithub,
       linkedinUrl: cleanLinkedin,
@@ -45,6 +50,7 @@ export async function POST(request: Request) {
       bio: bioInput.trim(),
       skills: cleanSkills,
       avatarUrl: avatarInput.trim(),
+      isDirectoryVisible,
     });
 
     const updatedProfile = await getUserProfileWithEvents(session.userId);

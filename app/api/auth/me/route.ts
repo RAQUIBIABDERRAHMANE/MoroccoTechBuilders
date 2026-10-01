@@ -13,13 +13,28 @@ export async function GET() {
       );
     }
 
-    const profile = await getUserProfileWithEvents(session.userId);
+    let profile = null;
+    try {
+      profile = await getUserProfileWithEvents(session.userId);
+    } catch (dbErr) {
+      console.warn('Transient Turso DB connection error in /api/auth/me, using session fallback:', dbErr);
+    }
 
     if (!profile) {
-      return NextResponse.json(
-        { success: false, authenticated: false, error: 'Profil introuvable.' },
-        { status: 404 }
-      );
+      // Graceful fallback to session data so user remains authenticated during brief network hiccup
+      return NextResponse.json({
+        success: true,
+        authenticated: true,
+        user: {
+          id: session.userId,
+          fullName: session.fullName,
+          email: session.email,
+          classe: session.classe,
+          year: session.classe.includes('1') ? '1ère Année' : '2ème Année',
+          skills: [],
+        },
+        registrations: [],
+      });
     }
 
     return NextResponse.json({

@@ -1,12 +1,17 @@
 import crypto from 'crypto';
 import { cookies } from 'next/headers';
 
+if (!process.env.SESSION_SECRET && process.env.NODE_ENV === 'production') {
+  throw new Error('SESSION_SECRET environment variable is strictly required in production.');
+}
+
 const SESSION_SECRET =
   process.env.SESSION_SECRET ||
   process.env.mtb_TURSO_AUTH_TOKEN ||
   'mtb-ofppt-secret-2026-key-morocco-tech';
 
 const COOKIE_NAME = 'mtb_session';
+
 
 export interface SessionPayload {
   userId: string;
@@ -90,3 +95,34 @@ export async function clearSessionCookie(): Promise<void> {
     maxAge: 0,
   });
 }
+
+// ── Password Reset Token Management (1 hour expiration) ───────────────────
+export interface PasswordResetPayload {
+  userId: string;
+  email: string;
+  exp: number;
+}
+
+export function createPasswordResetToken(userId: string, email: string): string {
+  const exp = Date.now() + 60 * 60 * 1000; // 1 heure
+  const payload: PasswordResetPayload = { userId, email, exp };
+  const data = Buffer.from(JSON.stringify(payload)).toString('base64url');
+  const signature = crypto.createHmac('sha256', SESSION_SECRET).update(`reset:${data}`).digest('base64url');
+  return `${data}.${signature}`;
+}
+
+export function verifyPasswordResetToken(token: string): PasswordResetPayload | null {
+  try {
+    const [data, signature] = token.split('.');
+    if (!data || !signature) return null;
+    const expectedSig = crypto.createHmac('sha256', SESSION_SECRET).update(`reset:${data}`).digest('base64url');
+    if (signature !== expectedSig) return null;
+
+    const payload: PasswordResetPayload = JSON.parse(Buffer.from(data, 'base64url').toString('utf8'));
+    if (Date.now() > payload.exp) return null;
+    return payload;
+  } catch {
+    return null;
+  }
+}
+

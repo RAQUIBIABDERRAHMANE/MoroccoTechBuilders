@@ -1,10 +1,25 @@
 import { NextResponse } from 'next/server';
 import { findUserByEmail, getUserRegistrations } from '@/lib/user-service';
 import { verifyPassword, setSessionCookie } from '@/lib/auth';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 export async function POST(request: Request) {
   try {
+    // Rate limit: 5 login attempts per minute per IP
+    const ip = getClientIp(request);
+    const rl = rateLimit(`login:${ip}`, 5, 60 * 1000);
+    if (!rl.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Trop de tentatives de connexion infructueuses. Veuillez patienter ${rl.reset}s.`,
+        },
+        { status: 429, headers: { 'Retry-After': String(rl.reset) } }
+      );
+    }
+
     const body = await request.json();
+
     const { email, password } = body;
 
     if (!email || !password) {

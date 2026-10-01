@@ -39,11 +39,20 @@ export default function ScanPage() {
   const cooldownRef = useRef<boolean>(false);
   const isScanningPausedRef = useRef<boolean>(false);
 
-  // Check existing session authentication on mount
+  // Check existing session authentication and load scan history on mount
   useEffect(() => {
     const auth = sessionStorage.getItem('scan_pin_authenticated');
     setIsAuthenticated(auth === 'true');
+    try {
+      const saved = sessionStorage.getItem('mtb_scan_history');
+      if (saved) {
+        setHistory(JSON.parse(saved));
+      }
+    } catch {
+      // ignore
+    }
   }, []);
+
 
   // Camera lifecycle handlers
   const startCamera = async (facing: 'environment' | 'user' = facingMode) => {
@@ -279,7 +288,10 @@ export default function ScanPage() {
     try {
       const res = await fetch('/api/scan', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-scan-token': SCAN_PIN,
+        },
         body: JSON.stringify({ data: raw }),
       });
 
@@ -300,7 +312,13 @@ export default function ScanPage() {
       };
 
       setLatestResult(resultItem);
-      setHistory((prev) => [resultItem, ...prev]);
+      setHistory((prev) => {
+        const next = [resultItem, ...prev].slice(0, 50);
+        try {
+          sessionStorage.setItem('mtb_scan_history', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
       playBeep(status);
       // Trigger fullscreen flash
       setFlashType(status);
@@ -314,6 +332,13 @@ export default function ScanPage() {
         message: 'Erreur de communication avec le serveur.',
       };
       setLatestResult(fallbackItem);
+      setHistory((prev) => {
+        const next = [fallbackItem, ...prev].slice(0, 50);
+        try {
+          sessionStorage.setItem('mtb_scan_history', JSON.stringify(next));
+        } catch {}
+        return next;
+      });
       playBeep('decline');
       setFlashType('decline');
       setTimeout(() => setFlashType(null), 1400);
@@ -719,9 +744,33 @@ export default function ScanPage() {
 
         {/* History Section */}
         <div className={styles.historySection}>
-          <div className={styles.historyTitle}>
-            <span>Historique des scans récents</span>
-            <span className={styles.historyCount}>{history.length} scans</span>
+          <div className={styles.historyTitle} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <span>Historique des scans récents</span>
+              <span className={styles.historyCount} style={{ marginLeft: 8 }}>{history.length} scans</span>
+            </div>
+            {history.length > 0 && (
+              <button
+                type="button"
+                onClick={() => {
+                  setHistory([]);
+                  try {
+                    sessionStorage.removeItem('mtb_scan_history');
+                  } catch {}
+                }}
+                style={{
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,255,255,0.12)',
+                  color: 'var(--text-dark-b)',
+                  fontSize: '0.75rem',
+                  padding: '4px 10px',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                }}
+              >
+                Effacer
+              </button>
+            )}
           </div>
 
           {history.length === 0 ? (
@@ -744,6 +793,19 @@ export default function ScanPage() {
                     <div>
                       <div className={styles.historyName}>{item.fullName}</div>
                       <div className={styles.historyClasse}>{item.classe}</div>
+                      {item.message && (
+                        <div
+                          style={{
+                            fontSize: '0.72rem',
+                            color: item.status === 'decline' ? '#ff7b72' : item.status === 'already_attended' ? '#fbbf24' : '#3fb950',
+                            marginTop: '2px',
+                            maxWidth: '320px',
+                            wordBreak: 'break-word',
+                          }}
+                        >
+                          {item.message}
+                        </div>
+                      )}
                     </div>
                   </div>
                   <span className={styles.historyTime}>{item.scannedAt}</span>
